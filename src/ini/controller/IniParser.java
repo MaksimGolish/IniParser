@@ -5,12 +5,10 @@ import ini.exception.WrongFileExtensionException;
 import ini.model.Ini;
 import ini.model.Property;
 import ini.model.Section;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class IniParser {
@@ -21,7 +19,7 @@ public class IniParser {
 
     public IniParser() {
     }
-    
+
     private @NotNull Property<?> parseProperty(String property) {
         if(property.matches(propertyWithCommentsPattern)) {
             // Delete comments
@@ -36,13 +34,13 @@ public class IniParser {
             throw new SyntaxErrorException("Wrong property declaration");
 
         // Checking type
-        if(args[1].matches("^-?\\d+$")) { // Is string integer
-            return new Property<>(args[0], Integer.parseInt(args[1]));
-        } else if(args[1].matches("^-?\\d+$.^-?\\d+$")) { // Is string float
-            return new Property<>(args[0], Float.parseFloat(args[1]));
-        } else {
-            return new Property<>(args[0], args[1]);
-        }
+        try {
+            return new Property<>(args[0], Integer.parseInt(args[1])); // Is int
+        } catch (Exception ignored){}
+        try {
+            return new Property<>(args[0], Float.parseFloat(args[1])); // Is float
+        } catch (Exception ignored){}
+        return new Property<>(args[0], args[1]);
     }
 
     private @NotNull Section parseSection(Scanner scanner, String name) {
@@ -54,7 +52,7 @@ public class IniParser {
                 continue;
             } else if(propertyString.matches(propertyPattern)) {
                 section.addProperty(parseProperty(propertyString));
-            } else if(propertyString.isBlank()||propertyString.matches(sectionPattern)) {
+            } else if(propertyString.isBlank()) {
                 break;
             } else {
                 throw new SyntaxErrorException("Wrong property declaration");

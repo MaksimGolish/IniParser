@@ -10,6 +10,6 @@ public class Main {
         Ini ini = iniParser.parse(new File("/Users/maksimgolish/IdeaProjects/iniparser/src/test.ini"));
         System.out.println(ini.getString("COMMON", "DiscCachePath"));
         System.out.println(ini.getString("Section", "login"));
-        System.out.println(ini.getObject("Section", "login"));
+        System.out.println(ini.getFloat("COMMON", "LogNMCD"));
     }
 }

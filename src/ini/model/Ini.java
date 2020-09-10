@@ -22,10 +22,7 @@ public class Ini {
     }
 
     public int getInt(String sectionName, String propertyKey) {
-        Object prop = sections
-                .findByName(sectionName)
-                .getProperties()
-                .findByKey(propertyKey).getValue();
+        Object prop = getPropertyObject(sectionName, propertyKey);
         if(prop instanceof Integer){
             return (int) prop;
         } else {
@@ -34,10 +31,7 @@ public class Ini {
     }
 
     public float getFloat(String sectionName, String propertyKey) {
-        Object prop = sections
-                .findByName(sectionName)
-                .getProperties()
-                .findByKey(propertyKey).getValue();
+        Object prop = getPropertyObject(sectionName, propertyKey);
         if(prop instanceof Float){
             return (float) prop;
         } else {
@@ -46,10 +40,7 @@ public class Ini {
     }
 
     public String getString(String sectionName, String propertyKey) {
-        Object prop = sections
-                .findByName(sectionName)
-                .getProperties()
-                .findByKey(propertyKey).getValue();
+        Object prop = getPropertyObject(sectionName, propertyKey);
         if(prop instanceof String){
             return (String) prop;
         } else {
@@ -57,7 +48,7 @@ public class Ini {
         }
     }
 
-    public Object getObject(String sectionName, String propertyKey) {
+    private Object getPropertyObject(String sectionName, String propertyKey) {
         return sections
                 .findByName(sectionName)
                 .getProperties()
