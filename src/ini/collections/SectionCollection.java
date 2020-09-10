@@ -1,6 +1,7 @@
-package ini.model;
+package ini.collections;
 
 import ini.exception.SectionNotFoundException;
+import ini.model.Section;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,7 @@
-package ini.model;
+package ini.collections;
 
 import ini.exception.PropertyNotFoundException;
+import ini.model.Property;
 
 import java.util.ArrayList;
 import java.util.List;

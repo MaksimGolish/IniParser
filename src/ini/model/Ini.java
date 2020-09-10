@@ -1,6 +1,7 @@
 package ini.model;
 
 import ini.exception.TypeMismatchException;
+import ini.collections.SectionCollection;
 
 public class Ini {
     private final SectionCollection sections;

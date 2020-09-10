@@ -1,5 +1,7 @@
 package ini.model;
 
+import ini.collections.PropertyCollection;
+
 public class Section {
     private String name;
     private final PropertyCollection properties;
