@@ -8,7 +8,8 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         IniParser iniParser = new IniParser();
         Ini ini = iniParser.parse(new File("/Users/maksimgolish/IdeaProjects/iniparser/src/test.ini"));
-        System.out.println(ini.tryGetString("COMMON", "DiscCachePath"));
-        System.out.println(ini.tryGetString("Section", "login"));
+        System.out.println(ini.getString("COMMON", "DiscCachePath"));
+        System.out.println(ini.getString("Section", "login"));
+        System.out.println(ini.getObject("Section", "login"));
     }
 }

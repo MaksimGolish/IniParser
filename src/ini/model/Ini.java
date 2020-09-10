@@ -2,8 +2,6 @@ package ini.model;
 
 import ini.exception.TypeMismatchException;
 
-import java.lang.reflect.ParameterizedType;
-
 public class Ini {
     private final SectionCollection sections;
 
@@ -23,7 +21,7 @@ public class Ini {
         sections.add(section);
     }
 
-    public int tryGetInt(String sectionName, String propertyKey) {
+    public int getInt(String sectionName, String propertyKey) {
         Object prop = sections
                 .findByName(sectionName)
                 .getProperties()
@@ -35,7 +33,7 @@ public class Ini {
         }
     }
 
-    public float tryGetFloat(String sectionName, String propertyKey) {
+    public float getFloat(String sectionName, String propertyKey) {
         Object prop = sections
                 .findByName(sectionName)
                 .getProperties()
@@ -47,7 +45,7 @@ public class Ini {
         }
     }
 
-    public String tryGetString(String sectionName, String propertyKey) {
+    public String getString(String sectionName, String propertyKey) {
         Object prop = sections
                 .findByName(sectionName)
                 .getProperties()
@@ -59,22 +57,10 @@ public class Ini {
         }
     }
 
-    // TODO Parametrized getter
-//    public <T> T tryGet(String sectionName, String propertyKey) {
-//        Object prop = sections
-//                .findByName(sectionName)
-//                .getProperties()
-//                .findByKey(propertyKey).getValue();
-//        Class<T> type = (Class<T>) ((ParameterizedType) getClass()
-//                .getGenericSuperclass())
-//                .getActualTypeArguments()[0];
-//        if(type.isInstance(prop)) {
-//            System.out.println(type);
-//            System.out.println(prop.getClass());
-//            return (T) prop;
-//        }
-//        else {
-//            throw new TypeMismatchException("Type mismatch: " + prop.getClass() + " and " + type);
-//        }
-//    }
+    public Object getObject(String sectionName, String propertyKey) {
+        return sections
+                .findByName(sectionName)
+                .getProperties()
+                .findByKey(propertyKey).getValue();
+    }
 }
