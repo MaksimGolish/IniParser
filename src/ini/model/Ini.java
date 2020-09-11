@@ -22,7 +22,7 @@ public class Ini {
         sections.add(section);
     }
 
-    public int getInt(String sectionName, String propertyKey) {
+    public int getInt(String sectionName, String propertyKey) throws TypeMismatchException {
         Object prop = getPropertyObject(sectionName, propertyKey);
         if(prop instanceof Integer){
             return (int) prop;
@@ -31,7 +31,7 @@ public class Ini {
         }
     }
 
-    public float getFloat(String sectionName, String propertyKey) {
+    public float getFloat(String sectionName, String propertyKey) throws TypeMismatchException {
         Object prop = getPropertyObject(sectionName, propertyKey);
         if(prop instanceof Float){
             return (float) prop;
@@ -40,7 +40,7 @@ public class Ini {
         }
     }
 
-    public String getString(String sectionName, String propertyKey) {
+    public String getString(String sectionName, String propertyKey) throws TypeMismatchException {
         Object prop = getPropertyObject(sectionName, propertyKey);
         if(prop instanceof String){
             return (String) prop;
