@@ -8,3 +8,4 @@ Usage example:
     iniParser iniParser = new IniParser();
     Ini ini = iniParser.parse(new File("src/test.ini"));
     System.out.println(ini.getString("COMMON", "DiscCachePath"));
+    
