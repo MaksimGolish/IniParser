@@ -5,7 +5,6 @@ import ini.exception.WrongFileExtensionException;
 import ini.model.Ini;
 import ini.model.Property;
 import ini.model.Section;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Scanner;
@@ -26,7 +25,7 @@ public class IniParser {
             return string;
     }
 
-    private @NotNull Property<?> parseProperty(String property) {
+    private Property<?> parseProperty(String property) {
         property = trimComments(property);
 
         // Split property to key and value
@@ -47,7 +46,7 @@ public class IniParser {
         return new Property<>(args[0], args[1]);
     }
 
-    private @NotNull Section parseSection(Scanner scanner, String name) {
+    private Section parseSection(Scanner scanner, String name) {
         Section section = new Section(name);
 
         while(scanner.hasNextLine()) {
