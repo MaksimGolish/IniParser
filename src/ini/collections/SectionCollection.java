@@ -24,6 +24,4 @@ public class SectionCollection {
         }
         throw new SectionNotFoundException("Section \"" + name + "\" does not exist");
     }
-
-
 }

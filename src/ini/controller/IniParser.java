@@ -15,7 +15,7 @@ public class IniParser {
     private final String propertyPattern;
 
     public IniParser() {
-        sectionPattern = "\\[.*]";
+        sectionPattern = "\\[[a-zA-Z]*]\\s*";
         propertyPattern = "[a-zA-Z]* ?[=] ?[a-zA-Z0-9./]*\\s*";
     }
 
