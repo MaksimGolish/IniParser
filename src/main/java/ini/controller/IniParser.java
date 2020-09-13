@@ -46,7 +46,7 @@ public class IniParser {
         return new Property<>(args[0], args[1]);
     }
 
-    private Section parseSection(Scanner scanner, String name) {
+    private Section parseSection(Scanner scanner, String name) throws Exception {
         Section section = new Section(name);
 
         while(scanner.hasNextLine()) {
@@ -80,7 +80,8 @@ public class IniParser {
             if(currentLine.matches(sectionPattern)) {
                 ini.addSection(parseSection(scanner, currentLine
                         .replaceAll("\\[", "")
-                        .replaceAll("]","")));
+                        .replaceAll("]","")
+                        .replaceAll(" ", "")));
             } else {
                 throw new SyntaxErrorException("Section declaration not found");
             }
