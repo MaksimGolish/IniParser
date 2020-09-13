@@ -60,20 +60,9 @@ public class Ini {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        List<Section> sectionList = sections.toList();
-        for(Section section : sectionList) {
-            str.append("[")
-                    .append(section.getName())
-                    .append("]\n");
-            for(Property<?> property : section.getProperties().toList()) {
-                str.append(property.getKey())
-                        .append(" = ")
-                        .append(property.getValue())
-                        .append("\n");
-            }
-            str.append("\n");
-        }
-        return str.toString();
+        StringBuilder iniString = new StringBuilder();
+        for(Section section : sections.toList())
+            iniString.append(section.toString()).append("\n");
+        return iniString.toString();
     }
 }

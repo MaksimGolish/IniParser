@@ -31,4 +31,12 @@ public class Section {
     public void addProperty(Property<?> property) {
         properties.add(property);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sectionString = new StringBuilder("[" + name + "]\n");
+        for(Property<?> property : properties.toList())
+            sectionString.append(property.toString()).append("\n");
+        return sectionString.toString();
+    }
 }
