@@ -28,7 +28,10 @@ public class Section {
         return properties;
     }
 
-    public void addProperty(Property<?> property) {
+    public void addProperty(Property<?> property) throws Exception {
+        for(Property<?> prop : properties.toList())
+            if(prop.getKey().equals(property.getKey()))
+                throw new Exception();
         properties.add(property);
     }
 

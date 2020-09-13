@@ -3,8 +3,6 @@ package ini.model;
 import ini.exception.TypeMismatchException;
 import ini.collections.SectionCollection;
 
-import java.util.List;
-
 public class Ini {
     private final SectionCollection sections;
 
