@@ -14,7 +14,7 @@ public class IniParser {
     private final String propertyPattern;
 
     public IniParser() {
-        sectionPattern = "\\[[a-zA-Z]*]\\s*";
+        sectionPattern = "\\[[a-zA-Z_]*]\\s*";
         propertyPattern = "[a-zA-Z]* ?[=] ?[a-zA-Z0-9./]*\\s*";
     }
 
@@ -75,7 +75,7 @@ public class IniParser {
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             String currentLine = trimComments(scanner.nextLine());
-            if(currentLine.isBlank())
+            if(currentLine.isBlank()) // Is comment
                 continue;
             if(currentLine.matches(sectionPattern)) {
                 ini.addSection(parseSection(scanner, currentLine
