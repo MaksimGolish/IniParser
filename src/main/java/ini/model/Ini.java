@@ -23,33 +23,26 @@ public class Ini {
     }
 
     public int getInt(String sectionName, String propertyKey) throws TypeMismatchException {
-        Object prop = getPropertyObject(sectionName, propertyKey);
-        if(prop instanceof Integer){
-            return (int) prop;
-        } else {
-            throw new TypeMismatchException("Property value is not int");
+        try {
+            return Integer.parseInt(getPropertyObject(sectionName, propertyKey));
+        } catch (NumberFormatException e) {
+            throw new TypeMismatchException("Cannot cast property value to int");
         }
     }
 
     public float getFloat(String sectionName, String propertyKey) throws TypeMismatchException {
-        Object prop = getPropertyObject(sectionName, propertyKey);
-        if(prop instanceof Float){
-            return (float) prop;
-        } else {
-            throw new TypeMismatchException("Property value is not float");
+        try {
+            return Float.parseFloat(getPropertyObject(sectionName, propertyKey));
+        } catch (NumberFormatException e) {
+            throw new TypeMismatchException("Cannot cast property value to float");
         }
     }
 
     public String getString(String sectionName, String propertyKey) throws TypeMismatchException {
-        Object prop = getPropertyObject(sectionName, propertyKey);
-        if(prop instanceof String){
-            return (String) prop;
-        } else {
-            throw new TypeMismatchException("Property value is not string");
-        }
+        return getPropertyObject(sectionName, propertyKey);
     }
 
-    private Object getPropertyObject(String sectionName, String propertyKey) {
+    private String getPropertyObject(String sectionName, String propertyKey) {
         return sections
                 .findByName(sectionName)
                 .getProperties()

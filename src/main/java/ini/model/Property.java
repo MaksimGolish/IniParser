@@ -1,18 +1,18 @@
 package ini.model;
 
-public class Property<T> {
+public class Property {
     private String key;
-    private T value;
+    private String value;
 
     public Property() {
     }
 
-    public Property(String key, T value) {
+    public Property(String key, String value) {
         this.key = key;
         this.value = value;
     }
 
-    public String getKey() {
+    public java.lang.String getKey() {
         return key;
     }
 
@@ -20,16 +20,16 @@ public class Property<T> {
         this.key = key;
     }
 
-    public T getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
     @Override
-    public String toString() {
+    public java.lang.String toString() {
         return key +  " = " + value;
     }
 }

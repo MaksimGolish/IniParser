@@ -28,8 +28,8 @@ public class Section {
         return properties;
     }
 
-    public void addProperty(Property<?> property) throws Exception {
-        for(Property<?> prop : properties.toList())
+    public void addProperty(Property property) throws Exception {
+        for(Property prop : properties.toList())
             if(prop.getKey().equals(property.getKey()))
                 throw new Exception();
         properties.add(property);
@@ -38,7 +38,7 @@ public class Section {
     @Override
     public String toString() {
         StringBuilder sectionString = new StringBuilder("[" + name + "]\n");
-        for(Property<?> property : properties.toList())
+        for(Property property : properties.toList())
             sectionString.append(property.toString()).append("\n");
         return sectionString.toString();
     }

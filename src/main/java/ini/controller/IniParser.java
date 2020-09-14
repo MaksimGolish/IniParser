@@ -25,7 +25,7 @@ public class IniParser {
             return string;
     }
 
-    private Property<?> parseProperty(String property) {
+    private Property parseProperty(String property) {
         property = trimComments(property);
 
         // Split property to key and value
@@ -36,14 +36,7 @@ public class IniParser {
         if(args.length!=2)
             throw new SyntaxErrorException("Wrong property declaration");
 
-        // Checking type
-        try {
-            return new Property<>(args[0], Integer.parseInt(args[1])); // Is int
-        } catch (Exception ignored){}
-        try {
-            return new Property<>(args[0], Float.parseFloat(args[1])); // Is float
-        } catch (Exception ignored){}
-        return new Property<>(args[0], args[1]);
+        return new Property(args[0], args[1]);
     }
 
     private Section parseSection(Scanner scanner, String name) throws Exception {
