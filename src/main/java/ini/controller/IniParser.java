@@ -39,26 +39,12 @@ public class IniParser {
         return new Property(args[0], args[1]);
     }
 
-    private Section parseSection(Scanner scanner, String name) throws Exception {
-        Section section = new Section(name);
-
-        while(scanner.hasNextLine()) {
-            String propertyString = scanner.nextLine();
-            if(propertyString.isBlank()) // End of section
-                break;
-
-            propertyString = trimComments(propertyString);
-
-            if(propertyString.isBlank()) // Is comment without properties
-                continue;
-
-            if(propertyString.matches(propertyPattern)) {
-                section.addProperty(parseProperty(propertyString));
-            } else {
-                throw new SyntaxErrorException("Wrong property declaration");
-            }
-        }
-        return section;
+    private Section parseSection(String name){
+        name = name
+                .replaceAll("\\[", "")
+                .replaceAll("]","")
+                .replaceAll(" ", "");
+        return new Section(name);
     }
 
     public Ini parse(File file) throws Exception {
@@ -66,19 +52,30 @@ public class IniParser {
             throw new WrongFileExtensionException("File extension is not INI");
         Ini ini = new Ini();
         Scanner scanner = new Scanner(file);
-        while (scanner.hasNextLine()) {
+        Section currentSection = null;
+        for(int lineNum = 1; scanner.hasNextLine(); lineNum++) {
             String currentLine = trimComments(scanner.nextLine());
             if(currentLine.isBlank()) // Is comment
                 continue;
             if(currentLine.matches(sectionPattern)) {
-                ini.addSection(parseSection(scanner, currentLine
-                        .replaceAll("\\[", "")
-                        .replaceAll("]","")
-                        .replaceAll(" ", "")));
-            } else {
-                throw new SyntaxErrorException("Section declaration not found");
+                if (currentSection != null)
+                    ini.addSection(currentSection);
+                currentSection = parseSection(currentLine);
+                continue;
             }
+            if(currentLine.matches(propertyPattern)) {
+                if(currentSection==null)
+                    throw new SyntaxErrorException("Section not found");
+                currentSection.addProperty(parseProperty(currentLine));
+                continue;
+            }
+            throw new SyntaxErrorException("Wrong syntax in line "
+                    + lineNum +": " + currentLine);
         }
+
+        if(currentSection!=null)
+            ini.addSection(currentSection);
+
         return ini;
     }
 }
