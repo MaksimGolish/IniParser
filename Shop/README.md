@@ -1,7 +1,7 @@
 > OOP, lab #2
 ## Shop Manager
 
-###Description
+### Description
 
 Main classes:
 
