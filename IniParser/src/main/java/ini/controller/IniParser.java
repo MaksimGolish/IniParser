@@ -17,7 +17,6 @@ public class IniParser {
         sectionPattern = "\\[[a-zA-Z_]*]\\s*";
         propertyPattern = "[a-zA-Z]* ?[=] ?[a-zA-Z0-9./]*\\s*";
     }
-
     private String trimComments(String string) {
         if(string.indexOf(';')!=-1)
             return string.substring(0, string.indexOf(";"));
