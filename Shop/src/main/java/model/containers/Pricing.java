@@ -10,34 +10,6 @@ import java.util.Map;
 
 // Contains prices and quantity. 
 public class Pricing {
-    private class Pair {
-        private Long price;
-        private Long quantity;
-
-        public Pair() {
-        }
-
-        public Pair(Long price, Long quantity) {
-            this.price = price;
-            this.quantity = quantity;
-        }
-
-        public Long getPrice() {
-            return price;
-        }
-
-        public void setPrice(Long price) {
-            this.price = price;
-        }
-
-        public Long getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(Long quantity) {
-            this.quantity = quantity;
-        }
-    }
     private final HashMap<Long, Map.Entry<Long, Long>> prices = new HashMap<>();
 
     public void addPosition(Long id, Long price, Long quantity) {
