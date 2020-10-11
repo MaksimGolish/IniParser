@@ -28,18 +28,18 @@ public class ShopManager {
         List<Long> shopsList = new ArrayList<>();
         Long lowestPrice = Long.MAX_VALUE;
         for(var shopEntry : repository.toMap().entrySet()) {
-            try {
-                Long price = shopEntry.getValue()
-                        .getPricing()
-                        .getPrice(productId);
-                if (price < lowestPrice) {
-                    shopsList.clear();
-                    shopsList.add(shopEntry.getKey());
-                    lowestPrice = price;
-                } else if (price.equals(lowestPrice)) {
-                    shopsList.add(shopEntry.getKey());
-                }
-            } catch (ProductNotFoundException ignored){}
+            if(!shopEntry.getValue().getPricing().exists(productId))
+                continue;
+            Long price = shopEntry.getValue()
+                    .getPricing()
+                    .getPrice(productId);
+            if (price < lowestPrice) {
+                shopsList.clear();
+                shopsList.add(shopEntry.getKey());
+                lowestPrice = price;
+            } else if (price.equals(lowestPrice)) {
+                shopsList.add(shopEntry.getKey());
+            }
         }
         if(!shopsList.isEmpty())
             return shopsList;

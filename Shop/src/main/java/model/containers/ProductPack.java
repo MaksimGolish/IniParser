@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// Used to contain pairs of price and quantity
 public class ProductPack {
+    // ProductID and quantity
     private final List<Map.Entry<Long, Long>> products = new ArrayList<>();
 
     public ProductPack add(Long id, Long quantity) {

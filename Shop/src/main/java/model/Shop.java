@@ -22,14 +22,14 @@ public class Shop {
     public Long buy(ProductPack order) {
         long finalPrice = 0L;
         for(var productOrder : order.toList()) {
-            try {
-                long price = pricing.getPrice(productOrder.getKey()) * productOrder.getValue();
-                pricing.setQuantity(productOrder.getKey(),
-                        pricing.getQuantity(productOrder.getKey()) - productOrder.getValue());
-                finalPrice += price;
-            } catch (IllegalQuantityException | ProductNotFoundException e) {
+            if(!pricing.exists(productOrder.getKey()))
                 throw new NotEnoughProductsException();
-            }
+            if(pricing.getQuantity(productOrder.getKey()) - productOrder.getValue() < 0)
+                throw new NotEnoughProductsException();
+            long price = pricing.getPrice(productOrder.getKey()) * productOrder.getValue();
+            pricing.setQuantity(productOrder.getKey(),
+                    pricing.getQuantity(productOrder.getKey()) - productOrder.getValue());
+            finalPrice += price;
         }
         return finalPrice;
     }
@@ -37,7 +37,7 @@ public class Shop {
     public ProductPack getProductsByPrice(Long price) {
         ProductPack productPack = new ProductPack();
         for(var product : pricing.toMap().entrySet()) {
-            if(product.getValue().getKey()<=price && product.getValue().getValue()!=0)
+            if(product.getValue().getKey() <= price && product.getValue().getValue() != 0)
                 productPack.add(product.getKey(),
                         Long.min(price / product.getValue().getKey(),
                                 pricing.getQuantity(product.getKey())));
