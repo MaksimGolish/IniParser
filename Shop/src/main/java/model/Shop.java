@@ -5,8 +5,8 @@ import model.containers.Pricing;
 import model.containers.ProductPack;
 
 public class Shop {
-    private static Long nextid = 0L;
-    private final Long id;
+    private static long nextid = 0L;
+    private final long id;
     private String name;
     private String address;
     private Pricing pricing;
@@ -61,7 +61,7 @@ public class Shop {
         pricing.setQuantity(id, newQuantity);
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

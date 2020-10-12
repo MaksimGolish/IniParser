@@ -11,7 +11,7 @@ public class ShopRepository {
         shops.put(shop.getId(), shop);
     }
 
-    public Shop getShopById(Long id) {
+    public Shop getShopById(long id) {
         return shops.get(id);
     }
 

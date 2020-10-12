@@ -3,8 +3,8 @@ package model;
 import context.ProductRegistrar;
 
 public class Product {
-    private static Long nextId = 0L;
-    private final Long id;
+    private static long nextId = 0L;
+    private final long id;
     private String name;
 
     public Product(String name) {
@@ -14,7 +14,7 @@ public class Product {
         ProductRegistrar.getInstance().register(this);
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
