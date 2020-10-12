@@ -66,7 +66,7 @@ public class ShopTests {
         // Check
         Assert.assertEquals(shopManager
                 .getCheapestShopsId(testProduct.getId()).size(), 1);
-        Assert.assertEquals(shopManager
+        Assert.assertEquals((long) shopManager
                 .getCheapestShopsId(testProduct.getId()).get(0), anotherShop.getId());
     }
 
@@ -116,6 +116,6 @@ public class ShopTests {
         manager.addShop(anotherShop);
         List<Long> result = manager.getCheapestShopsId(productPack);
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals(anotherShop.getId(), result.get(0));
+        Assert.assertEquals(anotherShop.getId(), (long) result.get(0));
     }
 }
