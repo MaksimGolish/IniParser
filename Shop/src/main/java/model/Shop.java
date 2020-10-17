@@ -26,6 +26,8 @@ public class Shop {
                 throw new NotEnoughProductsException();
             if(pricing.getQuantity(productOrder.getKey()) - productOrder.getValue() < 0)
                 throw new NotEnoughProductsException();
+        }
+        for(var productOrder : order.toList()) {
             long price = pricing.getPrice(productOrder.getKey()) * productOrder.getValue();
             pricing.setQuantity(productOrder.getKey(),
                     pricing.getQuantity(productOrder.getKey()) - productOrder.getValue());

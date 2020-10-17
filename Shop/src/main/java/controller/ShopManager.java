@@ -1,6 +1,5 @@
 package controller;
 
-import exception.NotEnoughProductsException;
 import exception.ProductNotFoundException;
 import model.Shop;
 import model.containers.ProductPack;
@@ -75,10 +74,7 @@ public class ShopManager {
                 }
             }
         }
-        if(!shopList.isEmpty())
-            return shopList;
-        else
-            throw new NotEnoughProductsException();
+        return shopList;
     }
 
     public ShopRepository getShops() {
