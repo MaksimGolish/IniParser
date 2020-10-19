@@ -19,14 +19,20 @@ public class Shop {
         pricing = new Pricing();
     }
 
+    public boolean packExists(ProductPack pack) {
+        for(var productOrder : pack.toList()) {
+            if(!pricing.exists(productOrder.getKey()))
+                return false;
+            if(pricing.getQuantity(productOrder.getKey()) - productOrder.getValue() < 0)
+                return false;
+        }
+        return true;
+    }
+
     public Long buy(ProductPack order) {
         long finalPrice = 0L;
-        for(var productOrder : order.toList()) {
-            if(!pricing.exists(productOrder.getKey()))
-                throw new NotEnoughProductsException();
-            if(pricing.getQuantity(productOrder.getKey()) - productOrder.getValue() < 0)
-                throw new NotEnoughProductsException();
-        }
+        if(!packExists(order))
+            throw new NotEnoughProductsException();
         for(var productOrder : order.toList()) {
             long price = pricing.getPrice(productOrder.getKey()) * productOrder.getValue();
             pricing.setQuantity(productOrder.getKey(),
