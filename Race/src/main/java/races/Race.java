@@ -1,5 +1,6 @@
 package races;
 
+import exception.IllegalLengthException;
 import exception.NoRegisteredRacersException;
 import model.Vehicle;
 
@@ -11,6 +12,8 @@ public class Race<T extends Vehicle> {
     protected boolean isReady = false;
 
     public Race(int length) {
+        if(length <= 0)
+            throw new IllegalLengthException();
         this.length = length;
     }
 

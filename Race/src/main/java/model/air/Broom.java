@@ -6,7 +6,7 @@ public class Broom extends AirVehicle{
     }
 
     @Override
-    public int getDistanceReducer(int length) {
+    public float getDistanceReducer(float length) {
         return length / 1000;
     }
 }

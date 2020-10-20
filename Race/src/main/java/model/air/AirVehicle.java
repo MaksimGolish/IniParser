@@ -8,9 +8,9 @@ public abstract class AirVehicle extends Vehicle {
     }
 
     @Override
-    public float getTime(int length) {
-        return length / getSpeed() * (100 - getDistanceReducer(length)) / 100;
+    public float getTime(float length) {
+        return length * 100 / (100 - getDistanceReducer(length)) / getSpeed();
     }
 
-    protected abstract int getDistanceReducer(int length);
+    protected abstract float getDistanceReducer(float length);
 }

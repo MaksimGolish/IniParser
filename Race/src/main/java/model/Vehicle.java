@@ -11,5 +11,5 @@ public abstract class Vehicle {
         return speed;
     }
 
-    public abstract float getTime(int length);
+    public abstract float getTime(float length);
 }

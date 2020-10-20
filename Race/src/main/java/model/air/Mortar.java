@@ -6,7 +6,7 @@ public class Mortar extends AirVehicle {
     }
 
     @Override
-    public int getDistanceReducer(int length) {
+    public float getDistanceReducer(float length) {
         return 6;
     }
 }

@@ -3,7 +3,7 @@ package model.land;
 import model.Vehicle;
 
 public abstract class LandVehicle extends Vehicle {
-    protected int restInterval;
+    protected final int restInterval;
     protected int stopCounter = 0;
 
     public abstract float getRestDuration();
@@ -13,7 +13,7 @@ public abstract class LandVehicle extends Vehicle {
         this.restInterval = restInterval;
     }
 
-    private float countRestTime(int length) {
+    private float countRestTime(float length) {
         float result = 0;
         for(int i = 0; i < length / getSpeed() / getRestInterval(); i++)
             result += getRestDuration();
@@ -21,7 +21,7 @@ public abstract class LandVehicle extends Vehicle {
     }
 
     @Override
-    public float getTime(int length) {
+    public float getTime(float length) {
         return length / getSpeed() + countRestTime(length);
     }
 
