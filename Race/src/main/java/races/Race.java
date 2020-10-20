@@ -11,7 +11,7 @@ public class Race<T extends Vehicle> {
     protected List<T> vehicleList = new ArrayList<>();
     protected boolean isReady = false;
 
-    public Race(int length) {
+    protected Race(int length) {
         if(length <= 0)
             throw new IllegalLengthException();
         this.length = length;

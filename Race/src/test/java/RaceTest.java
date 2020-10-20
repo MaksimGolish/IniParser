@@ -8,18 +8,21 @@ import model.air.Mortar;
 import model.land.*;
 import org.junit.Assert;
 import org.junit.Test;
+import races.AirRace;
+import races.LandRace;
 import races.Race;
+import races.UniversalRace;
 
 public class RaceTest {
     @Test(expected = NoRegisteredRacersException.class)
     public void testUnregisteredRace() {
-        Race<Vehicle> race = new Race<>(1000);
+        UniversalRace race = new UniversalRace(1000);
         race.run();
     }
 
     @Test(expected = IllegalLengthException.class)
     public void testIllegalRaceLength() {
-        Race<Vehicle> race = new Race<>(-1);
+        UniversalRace race = new UniversalRace(-1);
     }
 
     @Test
@@ -27,7 +30,7 @@ public class RaceTest {
         Broom broom = new Broom();
         MagicCarpet magicCarpet = new MagicCarpet();
         Mortar mortar = new Mortar();
-        Race<AirVehicle> race = new Race<>(1000);
+        AirRace race = new AirRace(1000);
         race.register(broom, magicCarpet, mortar);
         Assert.assertTrue(race.run() instanceof Broom);
     }
@@ -38,7 +41,7 @@ public class RaceTest {
         BactrianCamel bactrianCamel = new BactrianCamel();
         Centaur centaur = new Centaur();
         SpeedCamel speedCamel = new SpeedCamel();
-        Race<LandVehicle> race = new Race<>(1000);
+        LandRace race = new LandRace(1000);
         race.register(allTerrainBoots, bactrianCamel, centaur, speedCamel);
         Assert.assertTrue(race.run() instanceof SpeedCamel);
     }
@@ -52,7 +55,7 @@ public class RaceTest {
         Broom broom = new Broom();
         MagicCarpet magicCarpet = new MagicCarpet();
         Mortar mortar = new Mortar();
-        Race<Vehicle> race = new Race<>(1000);
+        Race<Vehicle> race = new UniversalRace(1000);
         race.register(allTerrainBoots, bactrianCamel, centaur,
                 speedCamel, broom, magicCarpet, mortar);
         Assert.assertTrue(race.run() instanceof SpeedCamel);
