@@ -22,7 +22,7 @@ public class Race<T extends Vehicle> {
         vehicleList.addAll(Arrays.asList(vehicles));
     }
 
-    public Vehicle run() {
+    public T run() {
         if(!isReady)
             throw new NoRegisteredRacersException();
         return Collections.min(vehicleList, Comparator.comparing(
