@@ -1,4 +1,4 @@
-package model.vehicles.land;
+package model.land;
 
 public class SpeedCamel extends LandVehicle {
     public SpeedCamel() {
@@ -6,7 +6,7 @@ public class SpeedCamel extends LandVehicle {
     }
 
     @Override
-    float getRestDuration() {
+    public float getRestDuration() {
         stopCounter++;
         switch (stopCounter) {
             case 1: return 5;

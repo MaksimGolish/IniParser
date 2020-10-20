@@ -1,17 +1,15 @@
-package model.vehicles;
+package model;
 
-public class Vehicle {
-    private int speed;
+public abstract class Vehicle {
+    private final float speed;
 
-    protected Vehicle(int speed) {
+    protected Vehicle(float speed) {
         this.speed = speed;
     }
 
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
+    public abstract float getTime(int length);
 }

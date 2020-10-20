@@ -1,4 +1,4 @@
-package model.vehicles.land;
+package model.land;
 
 public class AllTerrainBoots extends LandVehicle {
     public AllTerrainBoots() {
@@ -6,7 +6,7 @@ public class AllTerrainBoots extends LandVehicle {
     }
 
     @Override
-    float getRestDuration() {
+    public float getRestDuration() {
         stopCounter++;
         if(stopCounter==1)
             return 10;

@@ -1,4 +1,4 @@
-package model.vehicles.land;
+package model.land;
 
 public class BactrianCamel extends LandVehicle {
     public BactrianCamel() {

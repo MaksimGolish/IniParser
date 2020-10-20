@@ -1,12 +1,29 @@
-package model.races;
+package races;
 
-import model.vehicles.Vehicle;
+import exception.NoRegisteredRacersException;
+import model.Vehicle;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public abstract class Race<T> {
-    protected List<Vehicle> vehicleList;
-    abstract void register(T... vehicles);
-    abstract T run();
+public class Race<T extends Vehicle> {
+    protected int length;
+    protected List<T> vehicleList = new ArrayList<>();
+    protected boolean isReady = false;
+
+    public Race(int length) {
+        this.length = length;
+    }
+
+    public void register(T... vehicles) {
+        isReady = true;
+        vehicleList.addAll(Arrays.asList(vehicles));
+    }
+
+    public Vehicle run() {
+        if(!isReady)
+            throw new NoRegisteredRacersException();
+        return Collections.min(vehicleList, Comparator.comparing(
+                vehicle -> vehicle.getTime(length)
+        ));
+    }
 }
