@@ -6,8 +6,7 @@ public class SpeedCamel extends LandVehicle {
     }
 
     @Override
-    public float getRestDuration() {
-        stopCounter++;
+    protected float getRestDuration(int stopCounter) {
         switch (stopCounter) {
             case 1: return 5;
             case 2: return 6.5f;

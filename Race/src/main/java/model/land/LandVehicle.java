@@ -4,9 +4,8 @@ import model.Vehicle;
 
 public abstract class LandVehicle extends Vehicle {
     protected final int restInterval;
-    protected int stopCounter = 0;
 
-    public abstract float getRestDuration();
+    protected abstract float getRestDuration(int stopCounter);
 
     protected LandVehicle(int speed, int restInterval) {
         super(speed);
@@ -15,16 +14,17 @@ public abstract class LandVehicle extends Vehicle {
 
     private float countRestTime(float length) {
         float result = 0;
-        for(int i = 0; i < length / getSpeed() / getRestInterval(); i++)
-            result += getRestDuration();
+        int counter = 1;
+        for(int i = 0; i < length / getSpeed() / getRestInterval(); i++) {
+            result += getRestDuration(counter);
+            counter++;
+        }
         return result;
     }
 
     @Override
     public float getTime(float length) {
-        float time =  length / getSpeed() + countRestTime(length);
-        stopCounter = 0;
-        return time;
+        return length / getSpeed() + countRestTime(length);
     }
 
     private int getRestInterval() {

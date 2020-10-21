@@ -6,7 +6,7 @@ public class Centaur extends LandVehicle {
     }
 
     @Override
-    public float getRestDuration() {
+    protected float getRestDuration(int stopCounter) {
         return 2;
     }
 }

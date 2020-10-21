@@ -6,8 +6,7 @@ public class AllTerrainBoots extends LandVehicle {
     }
 
     @Override
-    public float getRestDuration() {
-        stopCounter++;
+    protected float getRestDuration(int stopCounter) {
         if(stopCounter==1)
             return 10;
         else

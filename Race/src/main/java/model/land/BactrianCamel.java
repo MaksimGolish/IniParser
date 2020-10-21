@@ -6,8 +6,7 @@ public class BactrianCamel extends LandVehicle {
     }
 
     @Override
-    public float getRestDuration() {
-        stopCounter++;
+    protected float getRestDuration(int stopCounter) {
         if(stopCounter==1)
             return 5;
         else
