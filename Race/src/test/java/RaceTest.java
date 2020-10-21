@@ -60,4 +60,28 @@ public class RaceTest {
                 speedCamel, broom, magicCarpet, mortar);
         Assert.assertTrue(race.run() instanceof SpeedCamel);
     }
+
+    @Test
+    public void runRaceTwice() {
+        // Land race
+        Broom broom = new Broom();
+        MagicCarpet magicCarpet = new MagicCarpet();
+        Mortar mortar = new Mortar();
+        AirRace airRace = new AirRace(1000);
+        airRace.register(broom, magicCarpet, mortar);
+        Assert.assertEquals(airRace.run(), airRace.run());
+        // Air race
+        AllTerrainBoots allTerrainBoots = new AllTerrainBoots();
+        BactrianCamel bactrianCamel = new BactrianCamel();
+        Centaur centaur = new Centaur();
+        SpeedCamel speedCamel = new SpeedCamel();
+        LandRace landRace = new LandRace(1000);
+        landRace.register(allTerrainBoots, bactrianCamel, centaur, speedCamel);
+        Assert.assertEquals(landRace.run(), landRace.run());
+        // Any race
+        Race<Vehicle> race = new UniversalRace(1000);
+        race.register(allTerrainBoots, bactrianCamel, centaur,
+                speedCamel, broom, magicCarpet, mortar);
+        Assert.assertEquals(race.run(), race.run());
+    }
 }

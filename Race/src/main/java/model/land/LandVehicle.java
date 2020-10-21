@@ -22,7 +22,9 @@ public abstract class LandVehicle extends Vehicle {
 
     @Override
     public float getTime(float length) {
-        return length / getSpeed() + countRestTime(length);
+        float time =  length / getSpeed() + countRestTime(length);
+        stopCounter = 0;
+        return time;
     }
 
     private int getRestInterval() {

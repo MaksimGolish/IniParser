@@ -17,7 +17,8 @@ public class Race<T extends Vehicle> {
         this.length = length;
     }
 
-    public void register(T... vehicles) {
+    @SafeVarargs
+    public final void register(T... vehicles) {
         isReady = true;
         vehicleList.addAll(Arrays.asList(vehicles));
     }
