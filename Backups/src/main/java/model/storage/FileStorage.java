@@ -1,11 +1,12 @@
 package model.storage;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FileStorage implements Storage {
-    List<File> files;
+public class FileStorage extends Storage {
+    private final List<File> files = new ArrayList<>();
 
     @Override
     public void addFiles(File... addedFiles) {
@@ -14,11 +15,6 @@ public class FileStorage implements Storage {
 
     @Override
     public List<File> getFiles() {
-        return null;
-    }
-
-    @Override
-    public int getSize() {
-        return 0;
+        return files;
     }
 }

@@ -1,11 +1,15 @@
 package model.storage;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.Archive;
 
 import java.io.File;
 import java.util.List;
 
-public class ArchivedStorage implements Storage {
+public class ArchivedStorage extends Storage {
+    @Getter
+    @Setter
     private Archive archive;
 
     public ArchivedStorage(Archive archive) {
@@ -20,10 +24,5 @@ public class ArchivedStorage implements Storage {
     @Override
     public List<File> getFiles() {
         return archive.unarchive();
-    }
-
-    @Override
-    public int getSize() {
-        return 0;
     }
 }

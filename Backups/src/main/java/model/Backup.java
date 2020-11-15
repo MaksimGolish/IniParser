@@ -19,14 +19,13 @@ public class Backup {
     @Getter
     private final Date creationDate;
     @Getter
-    private int size = 0;
-    @Getter
-    private List<RestorePoint> restorePoints = new ArrayList<>();
+    private final RestorePointsRepository restorePoints;
     private Storage currentStorage;
 
     public Backup(BackupType type) {
         id = UUID.randomUUID();
         creationDate = new Date();
+        restorePoints = new RestorePointsRepository();
         switch (type){
             case FILES:
                 currentStorage = new ArchivedStorage(new Archive());
@@ -35,10 +34,16 @@ public class Backup {
         }
     }
 
+    public long getSize() {
+        return restorePoints.getSize();
+    }
+
     public void addFiles(File... files) {
-        Arrays.stream(files)
-                .forEach(file -> size += file.length());
         currentStorage.addFiles(files);
+    }
+
+    public void setCleaner(CleanerConfig config) {
+        restorePoints.setCleanerConfig(config);
     }
 
     public void save(RestoreType type) {
@@ -57,23 +62,18 @@ public class Backup {
                 );
                 break;
         }
+        clean();
     }
 
     public void deletePoint(UUID pointId) {
-        int index = restorePoints.indexOf(
-                restorePoints
-                        .stream()
-                        .filter(point -> point.getId().equals(pointId))
-                        .findFirst()
-                        .orElseThrow(() -> new BackupPointDoesNotExist(pointId))
-        );
-//        if(restorePoints.get(index-1) instanceof IncrementalRestorePoint) {
-//            // TODO Incremental merge
-//        }
-
+        restorePoints.deleteById(pointId);
     }
 
     public RestorePoint getLast() {
-        return restorePoints.get(restorePoints.size()-1);
+        return restorePoints.getLast();
+    }
+
+    public void clean() {
+        restorePoints.clean();
     }
 }

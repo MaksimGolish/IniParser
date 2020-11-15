@@ -15,34 +15,53 @@ public class BackupCleaner {
     private List<RestorePoint> points;
 
     public List<RestorePoint> clean(List<RestorePoint> pointsToClean) {
-        this.points = pointsToClean;
-        if(mode == CleanerMode.ALL) {
-            cleanByAmount();
-            cleanByDate();
-            cleanBySize();
-            return points;
-        }
-        if(amount != null)
-            cleanByAmount();
-        if(date != null)
-            cleanByDate();
-        if(size != null)
-            cleanBySize();
+        points = pointsToClean;
+        if(mode == CleanerMode.ANY
+                && (isSizeOverflow() || isAmountOverflow() || isExpired())) {
+            cleanAll();
+        } else if(mode == CleanerMode.ANY && isSizeOverflow()
+                && isAmountOverflow() && isExpired())
+            cleanAll();
         return points;
     }
 
+    private void cleanAll() {
+        cleanBySize();
+        cleanByAmount();
+        cleanByDate();
+    }
+
     private void cleanByAmount() {
-        points = points.subList(points.size() - amount, points.size());
+        if(amount!=null)
+            points = points.subList(points.size() - amount, points.size());
     }
 
     private void cleanByDate() {
-        points = points.stream()
-                .filter(point -> date.after(date))
-                .collect(Collectors.toList());
+        if(date != null)
+            points = points.stream()
+                    .filter(point -> date.after(date))
+                    .collect(Collectors.toList());
     }
 
     private void cleanBySize() {
-        // TODO Implement
+        if(size != null)
+            while(points.size() >= size)
+                points.remove(0);
+    }
+
+    private boolean isExpired() {
+        return points.get(0).getCreationTime().before(date);
+    }
+
+    private boolean isAmountOverflow() {
+        return points.size() > amount;
+    }
+
+    private boolean isSizeOverflow() {
+        return points.stream()
+                .map(point -> point.getStorage().getSize())
+                .mapToLong(Long::longValue)
+                .sum() > size;
     }
 
     @Builder
