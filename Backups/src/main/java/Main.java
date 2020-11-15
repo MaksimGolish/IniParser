@@ -14,25 +14,20 @@ public class Main {
                 new File("src/main/resources/test2.txt")
         );
         backup.save(RestoreType.FULL);
-        System.out.println(backup.getSize());
-        backup.save(RestoreType.FULL);
+        backup.save(RestoreType.INCREMENTAL);
         backup.addFiles(
                 new File("src/main/resources/test1.txt"),
                 new File("src/main/resources/test2.txt"),
                 new File("src/main/resources/test3.txt"),
                 new File("src/main/resources/test4.txt")
         );
-        System.out.println(backup.getSize());
-        backup.save(RestoreType.FULL);
-        System.out.println(backup.getSize());
+        backup.save(RestoreType.INCREMENTAL);
         backup.setCleaner(
                 CleanerConfig.builder()
                         .mode(CleanerMode.ANY)
-                        .amount(10)
-                        .size(50)
+                        .amount(3)
                         .build()
         );
-        backup.save(RestoreType.FULL);
-        System.out.println(backup.getSize());
+        backup.save(RestoreType.INCREMENTAL);
     }
 }

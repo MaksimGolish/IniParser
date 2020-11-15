@@ -1,9 +1,11 @@
 package model;
 
 import exception.BackupPointDoesNotExist;
+import exception.IllegalMergeException;
 import exception.PointCannotBeDeletedException;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import model.points.FullRestorePoint;
 import model.points.IncrementalRestorePoint;
 import model.points.RestorePoint;
 
@@ -33,19 +35,50 @@ public class RestorePointsRepository {
     }
 
     public void deleteById(UUID pointId) {
-        int index = points.indexOf(
-                points.stream()
-                        .filter(point -> point.getId().equals(pointId))
-                        .findFirst()
-                        .orElseThrow(() -> new BackupPointDoesNotExist(pointId))
-        );
-//        if(restorePoints.get(index-1) instanceof IncrementalRestorePoint) {
-//            // TODO Incremental merge
-//        }
-        if(!(points.get(index) instanceof IncrementalRestorePoint))
+        int index = getIndex(pointId);
+        if(!isDependent(index))
             points.remove(index);
         else
             throw new PointCannotBeDeletedException();
+    }
+
+    public void deleteByIndex(int i) {
+        if(!isDependent(i)) {
+            points.remove(i);
+        } else {
+            throw new PointCannotBeDeletedException();
+        }
+    }
+
+    // Создаем новую точку с данными из инкрементальной точки,
+    // удаляем старую полную точку, если следующая инкрементальная - устанавливаем для неё новую предыдущую
+    public void merge(int i) {
+        if(isDependent(i)) {
+            FullRestorePoint newPoint = new FullRestorePoint(points.get(i + 1).getStorage());
+            points.set(i + 1, newPoint);
+            if(points.size() > i + 3 && isIncremental(i + 2))
+                ((IncrementalRestorePoint) points.get(i + 2)).setPrevious(points.get(i+1));
+            points.remove(i);
+        } else
+            throw new IllegalMergeException();
+    }
+
+    public int getIndex(UUID id) {
+        return points.indexOf(
+                points.stream()
+                        .filter(point -> point.getId().equals(id))
+                        .findFirst()
+                        .orElseThrow(() -> new BackupPointDoesNotExist(id)));
+    }
+
+    public boolean isDependent(int i) {
+        if(points.size() > i + 1)
+            return isIncremental(i + 1);
+        return false;
+    }
+
+    public boolean isIncremental(int i) {
+        return points.get(i) instanceof IncrementalRestorePoint;
     }
 
     public RestorePoint getLast() {
@@ -83,20 +116,29 @@ public class RestorePointsRepository {
     }
 
     public void clean() {
-        if(isCleaningNeeded()) {
+        if (isCleaningNeeded()) {
             cleanByAmount();
             cleanByDate();
             cleanBySize();
         }
     }
 
+    private void mergeTail() {
+        while(isDependent(0))
+            merge(0);
+    }
+
     private void cleanBySize() {
+        if(isSizeOverflow())
+            mergeTail();
         if(isSizeOverflow())
             while(getSize() > cleanerConfig.getSize())
                 points.remove(0);
     }
 
     private void cleanByAmount() {
+        if(isAmountOverflow())
+            mergeTail();
         if(isAmountOverflow())
             points = points.subList(points.size() - cleanerConfig.getAmount(), points.size());
     }

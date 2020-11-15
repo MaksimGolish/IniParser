@@ -17,4 +17,14 @@ public class RestorePoint {
         id = UUID.randomUUID();
         creationTime = new Date();
     }
+
+    @Override
+    public String toString() {
+        return "RestorePoint{" +
+                "id=" + id +
+                ", storage=" + storage +
+                ", creationTime=" + creationTime +
+                ", type" + getClass() +
+                '}';
+    }
 }

@@ -1,11 +1,13 @@
 package model.points;
 
 import lombok.Getter;
+import lombok.Setter;
 import model.storage.Storage;
 
 public class IncrementalRestorePoint extends RestorePoint {
     @Getter
-    private final RestorePoint previous;
+    @Setter
+    private RestorePoint previous;
 
     public IncrementalRestorePoint(Storage storage, RestorePoint previous) {
         super(storage);
