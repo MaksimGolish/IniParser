@@ -12,10 +12,11 @@ import model.points.RestorePoint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 @NoArgsConstructor
 public class RestorePointsRepository {
-    private List<RestorePoint> points = new ArrayList<>();
+    private final List<RestorePoint> points = new ArrayList<>();
     @Setter
     private CleanerConfig cleanerConfig;
 
@@ -50,15 +51,12 @@ public class RestorePointsRepository {
         }
     }
 
-    // Создаем новую точку с данными из инкрементальной точки,
-    // удаляем старую полную точку, если следующая инкрементальная - устанавливаем для неё новую предыдущую
-    public void merge(int i) {
+    public void transformNextToFull(int i) {
         if(isDependent(i)) {
             FullRestorePoint newPoint = new FullRestorePoint(points.get(i + 1).getStorage());
             points.set(i + 1, newPoint);
-            if(points.size() > i + 3 && isIncremental(i + 2))
+            if(points.size() > i + 2 && isIncremental(i + 2))
                 ((IncrementalRestorePoint) points.get(i + 2)).setPrevious(points.get(i+1));
-            points.remove(i);
         } else
             throw new IllegalMergeException();
     }
@@ -117,34 +115,17 @@ public class RestorePointsRepository {
 
     public void clean() {
         if (isCleaningNeeded()) {
-            cleanByAmount();
-            cleanByDate();
-            cleanBySize();
+            cleanByCondition(this::isSizeOverflow);
+            cleanByCondition(this::isAmountOverflow);
+            cleanByCondition(this::isExpired);
         }
     }
 
-    private void mergeTail() {
-        while(isDependent(0))
-            merge(0);
-    }
-
-    private void cleanBySize() {
-        if(isSizeOverflow())
-            mergeTail();
-        if(isSizeOverflow())
-            while(getSize() > cleanerConfig.getSize())
-                points.remove(0);
-    }
-
-    private void cleanByAmount() {
-        if(isAmountOverflow())
-            mergeTail();
-        if(isAmountOverflow())
-            points = points.subList(points.size() - cleanerConfig.getAmount(), points.size());
-    }
-
-    private void cleanByDate() {
-        while(isExpired())
+    public void cleanByCondition(Supplier<Boolean> cleaningCondition) {
+        while(cleaningCondition.get()) {
+            if(isDependent(0))
+                transformNextToFull(0);
             points.remove(0);
+        }
     }
 }
