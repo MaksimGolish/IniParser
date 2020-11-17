@@ -11,6 +11,7 @@ import model.storage.FileStorage;
 import model.storage.Storage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Backup {
@@ -20,7 +21,7 @@ public class Backup {
     private final Date creationDate;
     @Getter
     private final RestorePointsRepository restorePoints;
-    private Storage currentStorage;
+    private final Storage currentStorage;
 
     public Backup(BackupType type) {
         id = UUID.randomUUID();
@@ -29,8 +30,14 @@ public class Backup {
         switch (type){
             case FILES:
                 currentStorage = new ArchivedStorage(new Archive());
+                break;
             case ARCHIVED:
                 currentStorage = new FileStorage();
+                break;
+            default:
+                throw new IllegalStateException(
+                        "Backup mode " + type + " is not supported"
+                );
         }
     }
 
@@ -38,7 +45,14 @@ public class Backup {
         return restorePoints.getSize();
     }
 
-    public void addFiles(File... files) {
+    public int getAmount() {
+        return restorePoints.getPointsAmount();
+    }
+
+    public void addFiles(File... files) throws FileNotFoundException {
+        for(var file : files)
+            if(!file.isFile())
+                throw new FileNotFoundException();
         currentStorage.addFiles(files);
     }
 
@@ -67,6 +81,10 @@ public class Backup {
 
     public void deletePoint(UUID pointId) {
         restorePoints.deleteById(pointId);
+    }
+
+    public void delete(int i) {
+        restorePoints.deleteByIndex(i);
     }
 
     public RestorePoint getLast() {

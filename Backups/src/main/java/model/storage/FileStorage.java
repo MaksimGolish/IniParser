@@ -1,5 +1,7 @@
 package model.storage;
 
+import exception.FileAlreadyExistsException;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +12,9 @@ public class FileStorage extends Storage {
 
     @Override
     public void addFiles(File... addedFiles) {
+        for(var file : addedFiles)
+            if(exists(file))
+                throw new FileAlreadyExistsException();
         files.addAll(Arrays.asList(addedFiles));
     }
 

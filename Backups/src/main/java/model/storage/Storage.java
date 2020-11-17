@@ -12,4 +12,7 @@ public abstract class Storage {
                 .mapToLong(Long::longValue)
                 .sum();
     }
+    public boolean exists(File file) {
+        return getFiles().contains(file);
+    }
 }

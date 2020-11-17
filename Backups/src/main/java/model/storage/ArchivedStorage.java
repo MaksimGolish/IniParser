@@ -1,5 +1,6 @@
 package model.storage;
 
+import exception.FileAlreadyExistsException;
 import lombok.Getter;
 import lombok.Setter;
 import model.Archive;
@@ -18,6 +19,9 @@ public class ArchivedStorage extends Storage {
 
     @Override
     public void addFiles(File... addedFiles) {
+        for(var file : addedFiles)
+            if(exists(file))
+                throw new FileAlreadyExistsException();
         archive.addFiles(addedFiles);
     }
 

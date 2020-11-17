@@ -1,7 +1,7 @@
 package model;
 
 import exception.BackupPointDoesNotExist;
-import exception.IllegalMergeException;
+import exception.IllegalPointTransformationException;
 import exception.PointCannotBeDeletedException;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +12,6 @@ import model.points.RestorePoint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 @NoArgsConstructor
 public class RestorePointsRepository {
@@ -25,6 +24,10 @@ public class RestorePointsRepository {
                 .map(point -> point.getStorage().getSize())
                 .mapToLong(Long::longValue)
                 .sum();
+    }
+
+    public int getPointsAmount() {
+        return points.size();
     }
 
     public void add(RestorePoint point) {
@@ -51,17 +54,17 @@ public class RestorePointsRepository {
         }
     }
 
-    public void transformNextToFull(int i) {
+    private void transformNextToFull(int i) {
         if(isDependent(i)) {
             FullRestorePoint newPoint = new FullRestorePoint(points.get(i + 1).getStorage());
             points.set(i + 1, newPoint);
             if(points.size() > i + 2 && isIncremental(i + 2))
                 ((IncrementalRestorePoint) points.get(i + 2)).setPrevious(points.get(i+1));
         } else
-            throw new IllegalMergeException();
+            throw new IllegalPointTransformationException();
     }
 
-    public int getIndex(UUID id) {
+    private int getIndex(UUID id) {
         return points.indexOf(
                 points.stream()
                         .filter(point -> point.getId().equals(id))
@@ -69,13 +72,13 @@ public class RestorePointsRepository {
                         .orElseThrow(() -> new BackupPointDoesNotExist(id)));
     }
 
-    public boolean isDependent(int i) {
+    private boolean isDependent(int i) {
         if(points.size() > i + 1)
             return isIncremental(i + 1);
         return false;
     }
 
-    public boolean isIncremental(int i) {
+    private boolean isIncremental(int i) {
         return points.get(i) instanceof IncrementalRestorePoint;
     }
 
@@ -86,8 +89,12 @@ public class RestorePointsRepository {
     private boolean isCleaningNeeded() {
         if(cleanerConfig == null)
             return false;
+        // Выглядит оч не оч, но более красиво тут вряд ли можно сделать
         if(cleanerConfig.getMode() == CleanerMode.ALL)
-            return isExpired() && isAmountOverflow() && isSizeOverflow();
+            return (isExpired() || !cleanerConfig.isDateEnabled()) &&
+                    (isAmountOverflow() || !cleanerConfig.isAmountEnabled()) &&
+                    (isSizeOverflow() || !cleanerConfig.isSizeEnabled()) &&
+                    !cleanerConfig.isNull();
         else if(cleanerConfig.getMode() == CleanerMode.ANY)
             return isExpired() || isAmountOverflow() || isSizeOverflow();
         throw new IllegalStateException(
@@ -96,36 +103,30 @@ public class RestorePointsRepository {
     }
 
     private boolean isExpired() {
-        if(cleanerConfig.getDate() != null)
+        if(cleanerConfig.getDate() != null && !points.isEmpty())
             return points.get(0).getCreationTime().before(cleanerConfig.getDate());
         return false;
     }
 
     private boolean isAmountOverflow() {
-        if(cleanerConfig.getAmount() != null)
+        if(cleanerConfig.getAmount() != null && !points.isEmpty())
             return points.size() > cleanerConfig.getAmount();
         return false;
     }
 
     private boolean isSizeOverflow() {
-        if(cleanerConfig.getSize() != null)
+        if(cleanerConfig.getSize() != null && !points.isEmpty())
             return getSize() > cleanerConfig.getSize();
         return false;
     }
 
     public void clean() {
-        if (isCleaningNeeded()) {
-            cleanByCondition(this::isSizeOverflow);
-            cleanByCondition(this::isAmountOverflow);
-            cleanByCondition(this::isExpired);
-        }
-    }
-
-    public void cleanByCondition(Supplier<Boolean> cleaningCondition) {
-        while(cleaningCondition.get()) {
-            if(isDependent(0))
-                transformNextToFull(0);
-            points.remove(0);
+        if(isCleaningNeeded()) {
+            while(isAmountOverflow() || isSizeOverflow() || isExpired()) {
+                if(isDependent(0))
+                    transformNextToFull(0);
+                points.remove(0);
+            }
         }
     }
 }
