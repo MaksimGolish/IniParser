@@ -6,6 +6,7 @@ import java.util.List;
 public abstract class Storage {
     public abstract void addFiles(File... addedFiles);
     public abstract List<File> getFiles();
+    public abstract boolean deleteFile(File file);
     public long getSize() {
         return getFiles().stream()
                 .map(File::length)

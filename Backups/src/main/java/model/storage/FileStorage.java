@@ -22,4 +22,9 @@ public class FileStorage extends Storage {
     public List<File> getFiles() {
         return files;
     }
+
+    @Override
+    public boolean deleteFile(File file) {
+        return files.remove(file);
+    }
 }

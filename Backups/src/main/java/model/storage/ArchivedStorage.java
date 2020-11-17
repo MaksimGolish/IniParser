@@ -29,4 +29,9 @@ public class ArchivedStorage extends Storage {
     public List<File> getFiles() {
         return archive.unarchive();
     }
+
+    @Override
+    public boolean deleteFile(File file) {
+        return getFiles().remove(file);
+    }
 }

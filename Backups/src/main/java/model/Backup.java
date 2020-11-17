@@ -1,6 +1,7 @@
 package model;
 
 import exception.BackupPointDoesNotExist;
+import exception.NotFoundException;
 import lombok.Getter;
 import model.points.FullRestorePoint;
 import model.points.IncrementalRestorePoint;
@@ -11,7 +12,6 @@ import model.storage.FileStorage;
 import model.storage.Storage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Backup {
@@ -49,11 +49,15 @@ public class Backup {
         return restorePoints.getPointsAmount();
     }
 
-    public void addFiles(File... files) throws FileNotFoundException {
+    public void addFiles(File... files) {
         for(var file : files)
             if(!file.isFile())
-                throw new FileNotFoundException();
+                throw new NotFoundException();
         currentStorage.addFiles(files);
+    }
+
+    public boolean deleteFile(File file) {
+        return currentStorage.deleteFile(file);
     }
 
     public void setCleaner(CleanerConfig config) {
