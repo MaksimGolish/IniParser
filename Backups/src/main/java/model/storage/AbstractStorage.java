@@ -7,8 +7,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FileStorage extends Storage {
-    private final List<File> files = new ArrayList<>();
+public class AbstractStorage extends Storage {
+    private final List<File> files;
+
+    public AbstractStorage() {
+        this.files = new ArrayList<>();
+    }
+
+    public AbstractStorage(List<File> files) {
+        this.files = files;
+    }
 
     @Override
     public void addFiles(File... addedFiles) {

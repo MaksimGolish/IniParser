@@ -6,13 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Archive {
-    private final List<File> files = new ArrayList<>();
+    private final List<File> files;
 
     public Archive() {
+        files = new ArrayList<>();
     }
 
-    public Archive(File... files) {
-        addFiles(files);
+    public Archive(List<File> files) {
+        this.files = files;
     }
 
     public List<File> unarchive() {

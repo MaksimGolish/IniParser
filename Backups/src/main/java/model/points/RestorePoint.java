@@ -24,7 +24,7 @@ public class RestorePoint {
                 "id=" + id +
                 ", storage=" + storage +
                 ", creationTime=" + creationTime +
-                ", type" + getClass() +
+                ", type=" + getClass() +
                 '}';
     }
 }
