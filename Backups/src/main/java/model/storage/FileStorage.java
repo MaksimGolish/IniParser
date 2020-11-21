@@ -1,20 +1,21 @@
 package model.storage;
 
 import exception.FileAlreadyExistsException;
-import lombok.Getter;
-import lombok.Setter;
-import model.Archive;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class ArchivedStorage extends AbstractStorage {
-    @Getter
-    @Setter
-    private Archive archive;
+public class FileStorage extends AbstractStorage {
+    private final List<File> files;
 
-    public ArchivedStorage(Archive archive) {
-        this.archive = archive;
+    public FileStorage() {
+        this.files = new ArrayList<>();
+    }
+
+    public FileStorage(List<File> files) {
+        this.files = files;
     }
 
     @Override
@@ -22,16 +23,16 @@ public class ArchivedStorage extends AbstractStorage {
         for(var file : addedFiles)
             if(exists(file))
                 throw new FileAlreadyExistsException();
-        archive.addFiles(addedFiles);
+        files.addAll(Arrays.asList(addedFiles));
     }
 
     @Override
     public List<File> getFiles() {
-        return archive.unarchive();
+        return files;
     }
 
     @Override
     public boolean deleteFile(File file) {
-        return getFiles().remove(file);
+        return files.remove(file);
     }
 }

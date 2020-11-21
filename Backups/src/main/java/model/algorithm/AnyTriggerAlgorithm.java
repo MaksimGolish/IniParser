@@ -20,10 +20,9 @@ public class AnyTriggerAlgorithm implements AbstractCleaningAlgorithm {
 
     @Override
     public void clean(AbstractRepository repository) {
-        if(cleaners.stream().anyMatch(cleaner -> cleaner.isCleaningNeeded(repository.getPoints())))
+        if(cleaners.stream().anyMatch(cleaner -> cleaner.isCleaningNeeded(repository)))
             cleaners.forEach(
-                    cleaner -> repository.setPoints(
-                            cleaner.clean(repository.getPoints()))
+                    cleaner -> cleaner.clean(repository)
             );
     }
 }

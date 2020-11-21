@@ -1,10 +1,11 @@
 package model.cleaner;
 
 import model.points.RestorePoint;
+import model.repository.AbstractRepository;
 
 import java.util.List;
 
 public interface AbstractCleaner {
-    List<RestorePoint> clean(List<RestorePoint> points);
-    boolean isCleaningNeeded(List<RestorePoint> points);
+    void clean(AbstractRepository repository);
+    boolean isCleaningNeeded(AbstractRepository repository);
 }

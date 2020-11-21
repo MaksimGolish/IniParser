@@ -1,13 +1,15 @@
 package model;
 
+import exception.EmptyStorageException;
 import exception.NotFoundException;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import model.creator.PointCreator;
+import model.creator.AbstractPointCreator;
 import model.points.RestorePoint;
 import model.points.RestoreType;
 import model.repository.AbstractRepository;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.*;
@@ -19,16 +21,18 @@ public class Backup {
     @NonNull
     private final AbstractRepository pointsRepository;
     @NonNull
-    private PointCreator creator;
+    private AbstractPointCreator creator;
     private final List<File> currentFiles;
+    private final Logger log = Logger.getLogger(Backup.class);
 
     @Builder
-    public Backup(PointCreator creator, AbstractRepository pointsRepository) {
+    public Backup(AbstractPointCreator creator, AbstractRepository pointsRepository) {
         this.id = UUID.randomUUID();
         this.creationDate = new Date();
         this.pointsRepository = pointsRepository;
         this.creator = creator;
         this.currentFiles = new ArrayList<>();
+        log.info("Backup created, UUID: " + id + ", creation time: " + creationDate);
     }
 
     public long getSize() {
@@ -55,7 +59,15 @@ public class Backup {
     }
 
     public void save(RestoreType type) {
+        if(currentFiles.isEmpty())
+            throw new EmptyStorageException();
         creator.create(pointsRepository, currentFiles, type);
+        log.info("Restore point created, UUID: " +
+                pointsRepository.getLast().getId() +
+                "creation time: " +
+                pointsRepository.getLast().getCreationTime() +
+                ", files: " +
+                pointsRepository.getLast().getStorage().getFiles());
         clean();
     }
 

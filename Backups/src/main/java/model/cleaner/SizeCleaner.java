@@ -1,34 +1,40 @@
 package model.cleaner;
 
+import exception.ValidationErrorException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import model.points.RestorePoint;
+import model.repository.AbstractRepository;
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
 public class SizeCleaner implements AbstractCleaner {
+    @Getter
     private int size;
 
-    @Override
-    public List<RestorePoint> clean(List<RestorePoint> points) {
-        while(isCleaningNeeded(points))
-            points.remove(0);
-        return points;
+    public SizeCleaner(int size) {
+        if(size < 0)
+            throw new ValidationErrorException("Size can't be above zero");
+        this.size = size;
+    }
+
+    public void setSize(int size) {
+        if(size < 0)
+            throw new ValidationErrorException("Size can't be above zero");
+        this.size = size;
     }
 
     @Override
-    public boolean isCleaningNeeded(List<RestorePoint> points) {
-        if (points.isEmpty())
+    public void clean(AbstractRepository repository) {
+        while(isCleaningNeeded(repository))
+            repository.delete(0);
+    }
+
+    @Override
+    public boolean isCleaningNeeded(AbstractRepository repository) {
+        if (repository.isEmpty())
             return false;
-        return getFullSize(points) > size;
-    }
-
-    private long getFullSize(List<RestorePoint> points) {
-        return points.stream()
-                .map(point -> point.getStorage().getSize())
-                .mapToLong(Long::longValue)
-                .sum();
+        return repository.getSize() > size;
     }
 }

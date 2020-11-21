@@ -1,6 +1,6 @@
 package model.points;
 
-public enum RestoreType {
+public enum RestoreType implements AbstractRestoreType {
     FULL,
     INCREMENTAL
 }

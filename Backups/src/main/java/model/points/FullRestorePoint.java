@@ -1,9 +1,9 @@
 package model.points;
 
-import model.storage.Storage;
+import model.storage.AbstractStorage;
 
 public class FullRestorePoint extends RestorePoint {
-    public FullRestorePoint(Storage storage) {
+    public FullRestorePoint(AbstractStorage storage) {
         super(storage);
     }
 }

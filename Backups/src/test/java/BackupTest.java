@@ -1,3 +1,4 @@
+import exception.EmptyStorageException;
 import exception.PointCannotBeDeletedException;
 import model.Backup;
 import model.algorithm.AllTriggerAlgorithm;
@@ -27,6 +28,32 @@ public class BackupTest {
         );
         backup.save(RestoreType.FULL);
         Assert.assertEquals(1, backup.getAmount());
+    }
+
+    @Test(expected = EmptyStorageException.class)
+    public void emptyStorageTest() {
+        Backup backup = Backup.builder()
+                .pointsRepository(new RestorePointsRepository())
+                .creator(new FilePointCreator())
+                .build();
+        backup.save(RestoreType.FULL);
+    }
+
+    @Test(expected = PointCannotBeDeletedException.class)
+    public void incrementalPointsTest() {
+        Backup backup = Backup.builder()
+                .pointsRepository(new RestorePointsRepository())
+                .creator(new FilePointCreator())
+                .build();
+        backup.addFiles(
+                new File("src/test/resources/test1.txt"),
+                new File("src/test/resources/test2.txt"),
+                new File("src/test/resources/test3.txt"),
+                new File("src/test/resources/test4.txt")
+        );
+        backup.save(RestoreType.FULL);
+        backup.save(RestoreType.INCREMENTAL);
+        backup.delete(0);
     }
 
     @Test
@@ -133,8 +160,7 @@ public class BackupTest {
                         new RestorePointsRepository(
                                 new AllTriggerAlgorithm(
                                         new SizeCleaner(30),
-                                        new DateCleaner(new Date(System.currentTimeMillis()+3000L)),
-                                        new AmountCleaner(1)
+                                        new DateCleaner(new Date(System.currentTimeMillis()+3000L))
                                 )
                         ))
                 .creator(new FilePointCreator())

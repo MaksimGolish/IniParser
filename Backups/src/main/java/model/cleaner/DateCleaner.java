@@ -2,7 +2,9 @@ package model.cleaner;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import model.points.RestorePoint;
+import model.repository.AbstractRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -13,16 +15,15 @@ public class DateCleaner implements AbstractCleaner {
     private Date date;
 
     @Override
-    public List<RestorePoint> clean(List<RestorePoint> points) {
-        while (isCleaningNeeded(points))
-            points.remove(0);
-        return points;
+    public void clean(AbstractRepository repository) {
+        while (isCleaningNeeded(repository))
+            repository.delete(0);
     }
 
     @Override
-    public boolean isCleaningNeeded(List<RestorePoint> points) {
-        if (points.isEmpty())
+    public boolean isCleaningNeeded(AbstractRepository repository) {
+        if (repository.isEmpty())
             return false;
-        return points.get(0).getCreationTime().before(date);
+        return repository.get(0).getCreationTime().before(date);
     }
 }

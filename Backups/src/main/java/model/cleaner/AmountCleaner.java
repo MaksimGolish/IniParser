@@ -1,27 +1,41 @@
 package model.cleaner;
 
+import exception.ValidationErrorException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import model.points.RestorePoint;
+import model.repository.AbstractRepository;
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
 public class AmountCleaner implements AbstractCleaner {
+    @Getter
     private int amount;
 
-    @Override
-    public List<RestorePoint> clean(List<RestorePoint> points) {
-        while(isCleaningNeeded(points))
-            points.remove(0);
-        return points;
+    public AmountCleaner(int amount) {
+        if(amount < 0)
+            throw new ValidationErrorException("Amount can't be above zero");
+        this.amount = amount;
+    }
+
+    public void setAmount(int amount) {
+        if(amount < 0)
+            throw new ValidationErrorException("Amount can't be above zero");
+        this.amount = amount;
     }
 
     @Override
-    public boolean isCleaningNeeded(List<RestorePoint> points) {
-        if (points.isEmpty())
+    public void clean(AbstractRepository repository) {
+        while(isCleaningNeeded(repository))
+            repository.delete(0);
+    }
+
+    @Override
+    public boolean isCleaningNeeded(AbstractRepository repository) {
+        if (repository.isEmpty())
             return false;
-        return points.size() > amount;
+        return repository.getPointsAmount() > amount;
     }
 }
