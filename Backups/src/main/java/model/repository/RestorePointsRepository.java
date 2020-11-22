@@ -5,7 +5,7 @@ import exception.PointCannotBeDeletedException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import model.algorithm.AbstractCleaningAlgorithm;
+import model.algorithm.AbstractHybridCleaningAlgorithm;
 import model.points.IncrementalRestorePoint;
 import model.points.RestorePoint;
 
@@ -19,9 +19,9 @@ public class RestorePointsRepository implements AbstractRepository {
     @Setter
     private List<RestorePoint> points = new ArrayList<>();
     @Setter
-    private AbstractCleaningAlgorithm cleaningAlgorithm;
+    private AbstractHybridCleaningAlgorithm cleaningAlgorithm;
 
-    public RestorePointsRepository(AbstractCleaningAlgorithm cleaningAlgorithm) {
+    public RestorePointsRepository(AbstractHybridCleaningAlgorithm cleaningAlgorithm) {
         this.cleaningAlgorithm = cleaningAlgorithm;
     }
 

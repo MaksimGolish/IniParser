@@ -1,13 +1,12 @@
 package model.algorithm;
 
-import model.algorithm.AbstractCleaningAlgorithm;
 import model.cleaner.AbstractCleaner;
 import model.repository.AbstractRepository;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class AllTriggerAlgorithm implements AbstractCleaningAlgorithm {
+public class AllTriggerAlgorithm implements AbstractHybridCleaningAlgorithm {
     private final List<AbstractCleaner> cleaners;
 
     public AllTriggerAlgorithm(List<AbstractCleaner> cleaners) {
