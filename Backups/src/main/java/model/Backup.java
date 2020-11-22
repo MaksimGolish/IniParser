@@ -64,7 +64,7 @@ public class Backup {
         creator.create(pointsRepository, currentFiles, type);
         log.info("Restore point created, UUID: " +
                 pointsRepository.getLast().getId() +
-                "creation time: " +
+                ", creation time: " +
                 pointsRepository.getLast().getCreationTime() +
                 ", files: " +
                 pointsRepository.getLast().getStorage().getFiles());

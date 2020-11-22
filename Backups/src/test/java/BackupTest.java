@@ -188,4 +188,21 @@ public class BackupTest {
         backup.save(RestoreType.INCREMENTAL);
         backup.delete(0);
     }
+
+    @Test
+    public void singleCleanerTest() {
+        Backup backup = Backup.builder()
+                .pointsRepository(
+                        new RestorePointsRepository(
+                                new AmountCleaner(1)
+                        ))
+                .creator(new FilePointCreator())
+                .build();
+        backup.addFiles(
+                new File("src/test/resources/10b.txt"),
+                new File("src/test/resources/15b.txt"));
+        backup.save(RestoreType.FULL);
+        backup.save(RestoreType.FULL);
+        Assert.assertEquals(1, backup.getAmount());
+    }
 }
