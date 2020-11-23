@@ -2,6 +2,6 @@ package model.algorithm;
 
 import model.repository.AbstractRepository;
 
-public interface AbstractHybridCleaningAlgorithm {
+public interface AbstractCleaningAlgorithm {
     void clean(AbstractRepository repository);
 }

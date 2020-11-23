@@ -6,15 +6,13 @@ import model.repository.AbstractRepository;
 import java.util.Arrays;
 import java.util.List;
 
-public class AnyTriggerAlgorithm implements AbstractHybridCleaningAlgorithm {
-    private final List<AbstractCleaner> cleaners;
-
+public class AnyTriggerAlgorithm extends AbstractHybridAlgorithm {
     public AnyTriggerAlgorithm(List<AbstractCleaner> cleaners) {
-        this.cleaners = cleaners;
+        super(cleaners);
     }
 
     public AnyTriggerAlgorithm(AbstractCleaner... cleaners) {
-        this.cleaners = Arrays.asList(cleaners);
+        super(cleaners);
     }
 
     @Override
