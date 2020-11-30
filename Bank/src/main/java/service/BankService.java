@@ -1,6 +1,7 @@
 package service;
 
 import exception.ClientNotFoundException;
+import lombok.Getter;
 import model.Client;
 import model.account.Account;
 
@@ -8,19 +9,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class AccountService {
+public class BankService {
+    @Getter
     private final Map<UUID, Account> accounts;
     private final Map<UUID, Client> clients;
 
-    public AccountService() {
+    public BankService() {
         accounts = new HashMap<>();
         clients = new HashMap<>();
     }
 
     public void addAccount(Account account) {
-        if (!clients.containsKey(account.getOwner()))
-            throw new ClientNotFoundException(account.getOwner());
-        account.setVerified(clients.get(account.getOwner()).getPassport() != null);
+        if (!clients.containsKey(account.getOwner().getId()))
+            throw new ClientNotFoundException(account.getOwner().getId());
+        account.setVerified(clients.get(account.getOwner().getId()).getPassport() != null);
         accounts.put(account.getId(), account);
     }
 
