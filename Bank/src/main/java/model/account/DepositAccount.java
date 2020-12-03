@@ -1,20 +1,26 @@
 package model.account;
 
 import exception.WithdrawalNotAvailableException;
+import lombok.Builder;
 import model.Client;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class DepositAccount extends Account {
     private final LocalDateTime expirationTime;
     private final double percent;
     private boolean isActual = false;
 
-    public DepositAccount(int money, Client owner, LocalDateTime expirationTime, double percent) {
+    @Builder
+    public DepositAccount(double money, Client owner, LocalDateTime expirationTime) {
         super(money, owner);
         this.expirationTime = expirationTime;
-        this.percent = percent;
+        if (money < 50000)
+            percent = 3;
+        else if (money >= 50000 && money < 100000)
+            percent = 3.5;
+        else
+            percent = 4;
     }
 
     @Override
@@ -39,11 +45,12 @@ public class DepositAccount extends Account {
 
     @Override
     public boolean withdrawalAvailable() {
-        return expirationTime.isBefore(LocalDateTime.now());
+        return expirationTime.isBefore(dateProvider.now());
     }
 
     public void recalculate() {
         if (!isActual)
             money += money * percent / 365;
+        isActual = true;
     }
 }

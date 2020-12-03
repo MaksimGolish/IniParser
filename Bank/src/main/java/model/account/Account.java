@@ -1,9 +1,11 @@
 package model.account;
 
 import lombok.Data;
+import lombok.Setter;
 import model.Client;
 import transaction.TransferRequest;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -12,8 +14,10 @@ public abstract class Account {
     protected double money;
     protected final Client owner;
     protected boolean verified = false;
+    @Setter
+    protected DateProvider dateProvider = LocalDateTime::now;
 
-    public Account(int money, Client owner) {
+    public Account(double money, Client owner) {
         this.money = money;
         this.owner = owner;
     }

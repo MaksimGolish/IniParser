@@ -1,6 +1,5 @@
 package controller;
 
-import model.Bank;
 import transaction.Operation;
 import transaction.TransferRequest;
 

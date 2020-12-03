@@ -1,19 +1,19 @@
 package model.account;
 
 import exception.WithdrawalNotAvailableException;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
 import model.Client;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class CreditAccount extends Account {
     private LocalDateTime taxablePeriod;
     private final double percent;
-    private final int limit;
+    private final double limit;
 
-    public CreditAccount(Client owner, double percent, int money) {
+    @Builder
+    public CreditAccount(Client owner, double percent, double money) {
         super(money, owner);
         this.percent = percent;
         this.limit = money;
@@ -26,7 +26,7 @@ public class CreditAccount extends Account {
             throw new WithdrawalNotAvailableException();
         money -= amount;
         if (money < limit)
-            taxablePeriod = LocalDate.now().atStartOfDay();
+            taxablePeriod = dateProvider.now();
     }
 
     @Override
@@ -51,11 +51,11 @@ public class CreditAccount extends Account {
     private void recalculate() {
         if (taxablePeriod == null)
             return;
-        long days = Duration.between(taxablePeriod, LocalDateTime.now()).toDays();
+        long days = Duration.between(taxablePeriod, dateProvider.now()).toDays();
         if (days == 0)
             return;
         for (int i = 0; i < days; i++)
             money -= money * percent / 365 / 100;
-        taxablePeriod = LocalDate.now().atTime(0, 0);
+        taxablePeriod = dateProvider.now();
     }
 }

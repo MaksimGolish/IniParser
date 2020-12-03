@@ -1,13 +1,12 @@
-package model;
+package controller;
 
-import checker.*;
-import controller.TransactionProcessor;
+import checker.RequestHandler;
 import exception.AccountNotFoundException;
 import exception.TransactionNotFoundException;
-import model.account.DebitAccount;
+import lombok.Data;
+import lombok.NonNull;
+import model.Client;
 import service.BankService;
-import lombok.*;
-import model.account.Account;
 import transaction.Operation;
 import transaction.OperationType;
 import transaction.Transaction;
@@ -16,48 +15,26 @@ import transaction.TransferRequest;
 import java.util.*;
 
 @Data
-public class Bank {
+public abstract class Bank {
     private final String name;
     private final UUID id = UUID.randomUUID();
 
-    @Getter(value = AccessLevel.PRIVATE)
-    private final BankService bankService;
-    private final Map<UUID, Transaction> transactions;
-    private double debitPercent;
-    private RequestHandler requestHandler;
+    protected final BankService bankService;
+    protected final Map<UUID, Transaction> transactions;
+    protected RequestHandler requestHandler;
 
-    public Bank(String name, double debitPercent) {
+    public Bank(String name) {
         this.name = name;
         bankService = new BankService();
         transactions = new HashMap<>();
-        this.debitPercent = debitPercent;
         TransactionProcessor.getInstance().addBank(this);
         setupTransactions();
     }
 
-    private void setupTransactions() {
-        requestHandler = new ClientHandler();
-        requestHandler
-                .setNext(new ReceiverHandler())
-                .setNext(new TransactionHandler())
-                .setNext(new AccountBalanceHandler());
-    }
+    protected abstract void setupTransactions();
 
     public void addClient(@NonNull Client client) {
         bankService.addClient(client);
-    }
-
-    public UUID createDebitAccount(UUID clientId) {
-        Account account = DebitAccount.builder()
-                .owner(bankService.getClient(clientId))
-                .percent(debitPercent)
-                .build();
-        bankService.addAccount(account);
-        return account.getId();
-    }
-
-    public void addMoney(UUID id, int amount) {
-        bankService.getAccount(id).add(amount);
     }
 
     public boolean send(UUID accountId, int amount, UUID recipient) {
@@ -120,16 +97,13 @@ public class Bank {
         transactions.remove(operation.getId());
     }
 
-    public boolean hasAccount(UUID id) {
-        return bankService.hasAccount(id);
-    }
-
-    public List<Transaction> getTransactions() {
-        return new ArrayList<>(transactions.values());
-    }
 
     public double currentBalance(UUID account) {
         return bankService.getAccount(account).getMoney();
+    }
+
+    public boolean hasAccount(UUID id) {
+        return bankService.hasAccount(id);
     }
 
     public void withdraw(UUID account, int amount) {
@@ -154,5 +128,9 @@ public class Bank {
                 amount
         );
         transactions.put(operation.getId(), operation);
+    }
+
+    public List<Transaction> getTransactions() {
+        return new ArrayList<>(transactions.values());
     }
 }
