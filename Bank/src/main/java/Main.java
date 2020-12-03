@@ -22,7 +22,7 @@ public class Main {
         UUID senderAccount = tinkoff.createDebitAccount(sender.getId());
         UUID receiverAccount = sber.createDebitAccount(receiver.getId());
         tinkoff.addMoney(senderAccount, 100);
-        tinkoff.send(senderAccount, 50, receiverAccount);
+        System.out.println(tinkoff.send(senderAccount, 50, receiverAccount));
         tinkoff.getTransactions().get(0).cancel();
     }
 }

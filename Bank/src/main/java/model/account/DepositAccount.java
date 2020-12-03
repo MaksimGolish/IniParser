@@ -9,6 +9,7 @@ import java.util.UUID;
 public class DepositAccount extends Account {
     private final LocalDateTime expirationTime;
     private final double percent;
+    private boolean isActual = false;
 
     public DepositAccount(int money, Client owner, LocalDateTime expirationTime, double percent) {
         super(money, owner);
@@ -20,6 +21,7 @@ public class DepositAccount extends Account {
     public void get(int amount) {
         if (!withdrawalAvailable())
             throw new WithdrawalNotAvailableException();
+        recalculate();
         money -= amount;
     }
 
@@ -30,15 +32,18 @@ public class DepositAccount extends Account {
 
     @Override
     public double getBalance() {
+        if (withdrawalAvailable())
+            recalculate();
         return money;
     }
 
     @Override
     public boolean withdrawalAvailable() {
-        return expirationTime.isAfter(LocalDateTime.now());
+        return expirationTime.isBefore(LocalDateTime.now());
     }
 
-    public void update() {
-        money += money * percent / 365;
+    public void recalculate() {
+        if (!isActual)
+            money += money * percent / 365;
     }
 }

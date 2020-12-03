@@ -1,8 +1,8 @@
 package controller;
 
-import exception.AccountNotFoundException;
 import model.Bank;
-import model.TransferRequest;
+import transaction.Operation;
+import transaction.TransferRequest;
 
 import java.util.*;
 
@@ -24,12 +24,16 @@ public class TransactionProcessor {
         return true;
     }
 
-
-    public void cancel(TransferRequest transferRequest) {
-        findBankByAccount(transferRequest.getSender().getId())
+    public void cancelTransfer(TransferRequest transferRequest) {
+        findBankByAccount(transferRequest.getSenderAccount())
                 .cancelAsSender(transferRequest);
-        findBankByAccount(transferRequest.getSender().getId())
+        findBankByAccount(transferRequest.getRecipient())
                 .cancelAsReceiver(transferRequest);
+    }
+
+    public void cancelInnerOperation(Operation operation) {
+        findBankByAccount(operation.getAccount())
+                .cancelOperation(operation);
     }
 
     public Bank findBankByAccount(UUID id) {

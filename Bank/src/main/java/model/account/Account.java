@@ -1,9 +1,8 @@
 package model.account;
 
-import controller.TransactionProcessor;
 import lombok.Data;
 import model.Client;
-import model.TransferRequest;
+import transaction.TransferRequest;
 
 import java.util.UUID;
 

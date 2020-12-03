@@ -1,6 +1,6 @@
 package checker;
 
-import model.TransferRequest;
+import transaction.TransferRequest;
 import model.account.Account;
 
 public class ClientHandler extends RequestHandler {

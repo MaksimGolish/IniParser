@@ -1,8 +1,7 @@
 package checker;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import model.TransferRequest;
+import transaction.TransferRequest;
 import model.account.Account;
 
 @RequiredArgsConstructor
@@ -11,7 +10,7 @@ public abstract class RequestHandler {
 
     public RequestHandler setNext(RequestHandler next) {
         this.next = next;
-        return next;
+        return this.next;
     }
 
     public abstract boolean handle(TransferRequest request, Account account);

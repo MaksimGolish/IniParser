@@ -1,49 +1,61 @@
 package model.account;
 
+import exception.WithdrawalNotAvailableException;
+import lombok.RequiredArgsConstructor;
 import model.Client;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.UUID;
 
 public class CreditAccount extends Account {
     private LocalDateTime taxablePeriod;
     private final double percent;
+    private final int limit;
 
-    public CreditAccount(Client owner, double percent) {
-        super(0, owner);
+    public CreditAccount(Client owner, double percent, int money) {
+        super(money, owner);
         this.percent = percent;
+        this.limit = money;
     }
 
     @Override
     public void get(int amount) {
-        if (money >= 0 && money - amount < 0)
-            taxablePeriod = LocalDateTime.now();
+        recalculate();
+        if (money < amount)
+            throw new WithdrawalNotAvailableException();
         money -= amount;
+        if (money < limit)
+            taxablePeriod = LocalDate.now().atStartOfDay();
     }
 
     @Override
     public void add(int amount) {
-        count();
+        recalculate();
         money += amount;
-        if (money > 0)
+        if (money >= limit)
             taxablePeriod = null;
     }
 
     @Override
     public double getBalance() {
-        count();
+        recalculate();
         return money;
     }
 
     @Override
     public boolean withdrawalAvailable() {
-        return true;
+        return money > 0;
     }
 
-    private void count() {
-        if (taxablePeriod != null && money < 0)
-            money -= money * percent / 365 * Duration.between(taxablePeriod, LocalDateTime.now()).toDays();
+    private void recalculate() {
+        if (taxablePeriod == null)
+            return;
+        long days = Duration.between(taxablePeriod, LocalDateTime.now()).toDays();
+        if (days == 0)
+            return;
+        for (int i = 0; i < days; i++)
+            money -= money * percent / 365 / 100;
+        taxablePeriod = LocalDate.now().atTime(0, 0);
     }
 }

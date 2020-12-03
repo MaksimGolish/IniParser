@@ -1,16 +1,16 @@
-package model;
+package transaction;
 
 import controller.TransactionProcessor;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import model.Client;
 
 import java.util.Date;
 import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
-public class TransferRequest {
+public class TransferRequest implements Transaction {
     private final UUID id = UUID.randomUUID();
     private final Date time = new Date();
 
@@ -19,9 +19,10 @@ public class TransferRequest {
     private final Client sender;
     private final UUID recipient;
 
-    public final void cancel() {
+    @Override
+    public void cancel() {
         TransactionProcessor
                 .getInstance()
-                .cancel(this);
+                .cancelTransfer(this);
     }
 }

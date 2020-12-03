@@ -1,7 +1,7 @@
 package checker;
 
 import controller.TransactionProcessor;
-import model.TransferRequest;
+import transaction.TransferRequest;
 import model.account.Account;
 
 public class TransactionHandler extends RequestHandler {
