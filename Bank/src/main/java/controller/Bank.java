@@ -97,7 +97,6 @@ public abstract class Bank {
         transactions.remove(operation.getId());
     }
 
-
     public double currentBalance(UUID account) {
         return bankService.getAccount(account).getMoney();
     }

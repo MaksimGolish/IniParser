@@ -1,4 +1,7 @@
 import controller.ExampleBank;
+import exception.AccountNotFoundException;
+import exception.NotEnoughMoneyException;
+import exception.UnverifiedTransferException;
 import model.Client;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +21,7 @@ public class BasicOperationsTest {
         Client client = Client.builder()
                 .name("Max")
                 .surname("Golish")
-                .passport(1)
+                .passport(1L)
                 .build();
         bank.addClient(client);
         bank.createDebitAccount(client.getId());
@@ -37,7 +40,7 @@ public class BasicOperationsTest {
         Client client = Client.builder()
                 .name("Max")
                 .surname("Golish")
-                .passport(1)
+                .passport(1L)
                 .build();
         bank.addClient(client);
         UUID debit = bank.createDebitAccount(client.getId());
@@ -63,7 +66,7 @@ public class BasicOperationsTest {
         Client client = Client.builder()
                 .name("Max")
                 .surname("Golish")
-                .passport(1)
+                .passport(1L)
                 .build();
         bank.addClient(client);
         UUID debit = bank.createDebitAccount(client.getId());
@@ -92,7 +95,7 @@ public class BasicOperationsTest {
         Client max = Client.builder()
                 .name("Max")
                 .surname("Golish")
-                .passport(1)
+                .passport(1L)
                 .build();
         firstBank.addClient(max);
         UUID maxAccount = firstBank.createDebitAccount(max.getId());
@@ -106,7 +109,7 @@ public class BasicOperationsTest {
         Client fredi = Client.builder()
                 .name("Fredi")
                 .surname("Kats")
-                .passport(1)
+                .passport(1L)
                 .build();
         secondBank.addClient(fredi);
         UUID frediAccount = secondBank.createDebitAccount(fredi.getId());
@@ -126,7 +129,7 @@ public class BasicOperationsTest {
         Client max = Client.builder()
                 .name("Max")
                 .surname("Golish")
-                .passport(1)
+                .passport(1L)
                 .build();
         firstBank.addClient(max);
         UUID maxAccount = firstBank.createDebitAccount(max.getId());
@@ -140,7 +143,7 @@ public class BasicOperationsTest {
         Client fredi = Client.builder()
                 .name("Fredi")
                 .surname("Kats")
-                .passport(1)
+                .passport(1L)
                 .build();
         secondBank.addClient(fredi);
         UUID frediAccount = secondBank.createDebitAccount(fredi.getId());
@@ -148,5 +151,48 @@ public class BasicOperationsTest {
         firstBank.getTransactions().get(0).cancel();
         Assertions.assertEquals(1000, firstBank.currentBalance(maxAccount), 1);
         Assertions.assertEquals(0, secondBank.currentBalance(frediAccount), 1);
+    }
+
+    @Test
+    public void testTransferExceptions() {
+        ExampleBank firstBank = ExampleBank
+                .builder()
+                .name("First bank")
+                .creditPercent(15d)
+                .debitPercent(3d)
+                .build();
+        // Unverified
+        Client max = Client.builder()
+                .name("Max")
+                .surname("Golish")
+                .build();
+        firstBank.addClient(max);
+        UUID maxAccount = firstBank.createDebitAccount(max.getId());
+        firstBank.add(maxAccount, 20000);
+        ExampleBank secondBank = ExampleBank
+                .builder()
+                .name("Second bank")
+                .creditPercent(15d)
+                .debitPercent(3d)
+                .build();
+        Client fredi = Client.builder()
+                .name("Fredi")
+                .surname("Kats")
+                .passport(2L)
+                .build();
+        secondBank.addClient(fredi);
+        UUID frediAccount = secondBank.createDebitAccount(fredi.getId());
+        Assertions.assertThrows(
+                UnverifiedTransferException.class,
+                () -> firstBank.send(maxAccount, 15000, frediAccount)
+        );
+        Assertions.assertThrows(
+                NotEnoughMoneyException.class,
+                () -> secondBank.send(frediAccount, 10000, maxAccount)
+        );
+        Assertions.assertThrows(
+                AccountNotFoundException.class,
+                () -> firstBank.send(maxAccount, 100, UUID.randomUUID())
+        );
     }
 }

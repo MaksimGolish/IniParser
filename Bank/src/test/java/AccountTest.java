@@ -11,7 +11,7 @@ public class AccountTest {
     private final Client tempClient = Client.builder()
             .name("Name")
             .surname("Surname")
-            .passport(0)
+            .passport(0L)
             .build();
 
     @Test

@@ -13,7 +13,7 @@ public class Client {
     private Long passport;
 
     @Builder
-    private Client(String name, String surname, long passport) {
+    private Client(String name, String surname, Long passport) {
         this.name = name;
         this.surname = surname;
         this.passport = passport;

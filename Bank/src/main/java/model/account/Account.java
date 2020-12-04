@@ -13,7 +13,6 @@ public abstract class Account {
     protected final UUID id = UUID.randomUUID();
     protected double money;
     protected final Client owner;
-    protected boolean verified = false;
     @Setter
     protected DateProvider dateProvider = LocalDateTime::now;
 

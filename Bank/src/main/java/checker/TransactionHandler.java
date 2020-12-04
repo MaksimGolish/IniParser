@@ -1,6 +1,7 @@
 package checker;
 
 import controller.TransactionProcessor;
+import exception.TransferException;
 import transaction.TransferRequest;
 import model.account.Account;
 
@@ -9,6 +10,6 @@ public class TransactionHandler extends RequestHandler {
     public boolean handle(TransferRequest request, Account account) {
         if (TransactionProcessor.getInstance().proceedTransaction(request))
             return next(request, account);
-        return false;
+        throw new TransferException("Cannot perform transfer");
     }
 }

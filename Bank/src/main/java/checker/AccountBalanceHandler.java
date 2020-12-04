@@ -1,5 +1,6 @@
 package checker;
 
+import exception.NotEnoughMoneyException;
 import transaction.TransferRequest;
 import model.account.Account;
 
@@ -10,6 +11,6 @@ public class AccountBalanceHandler extends RequestHandler {
             account.get(request.getAmount());
             return next(request, account);
         }
-        return false;
+        throw new NotEnoughMoneyException();
     }
 }

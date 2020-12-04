@@ -37,7 +37,7 @@ public class ExampleBank extends Bank {
 
     @Override
     protected void setupTransactions() {
-        requestHandler = new ClientHandler();
+        requestHandler = new ClientHandler(10000);
         requestHandler
                 .setNext(new ReceiverHandler())
                 .setNext(new TransactionHandler())

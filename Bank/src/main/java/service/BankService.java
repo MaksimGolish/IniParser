@@ -22,7 +22,6 @@ public class BankService {
     public void addAccount(Account account) {
         if (!clients.containsKey(account.getOwner().getId()))
             throw new ClientNotFoundException(account.getOwner().getId());
-        account.setVerified(clients.get(account.getOwner().getId()).getPassport() != null);
         accounts.put(account.getId(), account);
     }
 
