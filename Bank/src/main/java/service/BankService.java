@@ -12,6 +12,7 @@ import java.util.UUID;
 public class BankService {
     @Getter
     private final Map<UUID, Account> accounts;
+    @Getter
     private final Map<UUID, Client> clients;
 
     public BankService() {

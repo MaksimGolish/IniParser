@@ -1,9 +1,10 @@
 package model.account;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 import model.Client;
-import transaction.TransferRequest;
+import transaction.Transfer;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -32,7 +33,7 @@ public abstract class Account {
         money += amount;
     }
 
-    public TransferRequest createTransferRequest(int amount, UUID receiver) {
-        return new TransferRequest(amount, id, owner, receiver);
+    public Transfer createTransferRequest(int amount, UUID receiver) {
+        return new Transfer(amount, id, owner, receiver);
     }
 }

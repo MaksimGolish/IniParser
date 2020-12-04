@@ -7,10 +7,10 @@ import lombok.Data;
 import lombok.NonNull;
 import model.Client;
 import service.BankService;
-import transaction.Operation;
+import transaction.InnerOperation;
 import transaction.OperationType;
 import transaction.Transaction;
-import transaction.TransferRequest;
+import transaction.Transfer;
 
 import java.util.*;
 
@@ -37,25 +37,22 @@ public abstract class Bank {
         bankService.addClient(client);
     }
 
-    public boolean send(UUID accountId, int amount, UUID recipient) {
-        TransferRequest request = bankService
+    public void send(UUID accountId, int amount, UUID recipient) {
+        Transfer request = bankService
                 .getAccount(accountId)
                 .createTransferRequest(amount, recipient);
-        if (requestHandler.handle(request, bankService.getAccount(accountId))) {
-            transactions.put(request.getId(), request);
-            return true;
-        }
-        return false;
+        requestHandler.handle(request, bankService.getAccount(accountId));
+        transactions.put(request.getId(), request);
     }
 
-    public void accept(TransferRequest transferRequest) {
+    public void accept(Transfer transfer) {
         bankService
-                .getAccount(transferRequest.getRecipient())
-                .add(transferRequest.getAmount());
-        transactions.put(transferRequest.getId(), transferRequest);
+                .getAccount(transfer.getRecipient())
+                .add(transfer.getAmount());
+        transactions.put(transfer.getId(), transfer);
     }
 
-    public void cancelAsSender(TransferRequest request) {
+    public void cancelAsSender(Transfer request) {
         if (!transactions.containsKey(request.getId()))
             throw new TransactionNotFoundException();
         if (!hasAccount(request.getSenderAccount()))
@@ -66,7 +63,7 @@ public abstract class Bank {
         transactions.remove(request.getId());
     }
 
-    public void cancelAsReceiver(TransferRequest request) {
+    public void cancelAsReceiver(Transfer request) {
         if (!transactions.containsKey(request.getId()))
             throw new TransactionNotFoundException();
         if (!hasAccount(request.getRecipient()))
@@ -77,7 +74,7 @@ public abstract class Bank {
         transactions.remove(request.getId());
     }
 
-    public void cancelOperation(Operation operation) {
+    public void cancelOperation(InnerOperation operation) {
         if (!transactions.containsKey(operation.getId()))
             throw new TransactionNotFoundException();
         if (!hasAccount(operation.getAccount()))
@@ -109,7 +106,7 @@ public abstract class Bank {
         bankService
                 .getAccount(account)
                 .get(amount);
-        Operation operation = new Operation(
+        InnerOperation operation = new InnerOperation(
                 account,
                 OperationType.WITHDRAW,
                 amount
@@ -121,7 +118,7 @@ public abstract class Bank {
         bankService
                 .getAccount(account)
                 .add(amount);
-        Operation operation = new Operation(
+        InnerOperation operation = new InnerOperation(
                 account,
                 OperationType.CREDITING,
                 amount

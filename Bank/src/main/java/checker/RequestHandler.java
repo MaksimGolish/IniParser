@@ -1,8 +1,8 @@
 package checker;
 
 import lombok.RequiredArgsConstructor;
-import transaction.TransferRequest;
 import model.account.Account;
+import transaction.Transfer;
 
 @RequiredArgsConstructor
 public abstract class RequestHandler {
@@ -13,8 +13,8 @@ public abstract class RequestHandler {
         return this.next;
     }
 
-    public abstract boolean handle(TransferRequest request, Account account);
-    public boolean next(TransferRequest request, Account account) {
+    public abstract boolean handle(Transfer request, Account account);
+    public boolean next(Transfer request, Account account) {
         return next == null || next.handle(request, account);
     }
 }

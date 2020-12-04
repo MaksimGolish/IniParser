@@ -1,24 +1,21 @@
 package controller;
 
-import checker.*;
-import controller.TransactionProcessor;
-import exception.AccountNotFoundException;
+import checker.AccountBalanceHandler;
+import checker.ClientHandler;
+import checker.ReceiverHandler;
+import checker.TransactionHandler;
+import exception.ClientNotFoundException;
 import exception.IllegalPercentException;
-import exception.TransactionNotFoundException;
+import lombok.Builder;
+import lombok.NonNull;
 import model.Client;
+import model.account.Account;
 import model.account.CreditAccount;
 import model.account.DebitAccount;
 import model.account.DepositAccount;
-import service.BankService;
-import lombok.*;
-import model.account.Account;
-import transaction.Operation;
-import transaction.OperationType;
-import transaction.Transaction;
-import transaction.TransferRequest;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.UUID;
 
 public class ExampleBank extends Bank {
     private final double debitPercent;
@@ -45,9 +42,12 @@ public class ExampleBank extends Bank {
     }
 
     public UUID createDebitAccount(UUID clientId) {
+        Client client = bankService.getClient(clientId);
+        if (client == null)
+            throw new ClientNotFoundException(clientId);
         Account account = DebitAccount
                 .builder()
-                .owner(bankService.getClient(clientId))
+                .owner(client)
                 .percent(debitPercent)
                 .build();
         bankService.addAccount(account);
@@ -55,6 +55,9 @@ public class ExampleBank extends Bank {
     }
 
     public UUID createCreditAccount(UUID clientId, double limit) {
+        Client client = bankService.getClient(clientId);
+        if (client == null)
+            throw new ClientNotFoundException(clientId);
         Account account = CreditAccount
                 .builder()
                 .owner(bankService.getClient(clientId))
@@ -66,6 +69,9 @@ public class ExampleBank extends Bank {
     }
 
     public UUID createDepositAccount(UUID clientId, double money, LocalDateTime expirationTime) {
+        Client client = bankService.getClient(clientId);
+        if (client == null)
+            throw new ClientNotFoundException(clientId);
         Account account = DepositAccount
                 .builder()
                 .owner(bankService.getClient(clientId))

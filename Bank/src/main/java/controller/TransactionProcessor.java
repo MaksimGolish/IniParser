@@ -1,9 +1,11 @@
 package controller;
 
-import transaction.Operation;
-import transaction.TransferRequest;
+import transaction.InnerOperation;
+import transaction.Transfer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class TransactionProcessor {
     private static final TransactionProcessor instance = new TransactionProcessor();
@@ -17,20 +19,20 @@ public class TransactionProcessor {
         banks.add(bank);
     }
 
-    public boolean proceedTransaction(TransferRequest transferRequest) {
-        findBankByAccount(transferRequest.getRecipient())
-                .accept(transferRequest);
+    public boolean proceedTransaction(Transfer transfer) {
+        findBankByAccount(transfer.getRecipient())
+                .accept(transfer);
         return true;
     }
 
-    public void cancelTransfer(TransferRequest transferRequest) {
-        findBankByAccount(transferRequest.getSenderAccount())
-                .cancelAsSender(transferRequest);
-        findBankByAccount(transferRequest.getRecipient())
-                .cancelAsReceiver(transferRequest);
+    public void cancelTransfer(Transfer transfer) {
+        findBankByAccount(transfer.getSenderAccount())
+                .cancelAsSender(transfer);
+        findBankByAccount(transfer.getRecipient())
+                .cancelAsReceiver(transfer);
     }
 
-    public void cancelInnerOperation(Operation operation) {
+    public void cancelInnerOperation(InnerOperation operation) {
         findBankByAccount(operation.getAccount())
                 .cancelOperation(operation);
     }
