@@ -7,9 +7,9 @@ import transaction.Transfer;
 
 public class TransactionHandler extends RequestHandler {
     @Override
-    public boolean handle(Transfer request, Account account) {
+    public void handle(Transfer request, Account account) {
         if (TransactionProcessor.getInstance().proceedTransaction(request))
-            return next(request, account);
+            next(request, account);
         throw new TransferException("Cannot perform transfer");
     }
 }

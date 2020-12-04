@@ -6,10 +6,10 @@ import transaction.Transfer;
 
 public class AccountBalanceHandler extends RequestHandler {
     @Override
-    public boolean handle(Transfer request, Account account) {
+    public void handle(Transfer request, Account account) {
         if (account.getBalance() > request.getAmount() && account.withdrawalAvailable()) {
             account.get(request.getAmount());
-            return next(request, account);
+            next(request, account);
         }
         throw new NotEnoughMoneyException();
     }

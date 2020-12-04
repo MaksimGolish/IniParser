@@ -7,10 +7,10 @@ import transaction.Transfer;
 
 public class ReceiverHandler extends RequestHandler {
     @Override
-    public boolean handle(Transfer request, Account account) {
+    public void handle(Transfer request, Account account) {
         if (TransactionProcessor.getInstance().findBankByAccount(request.getRecipient()) == null)
             throw new AccountNotFoundException(request.getRecipient());
         else
-            return next(request, account);
+            next(request, account);
     }
 }

@@ -13,8 +13,10 @@ public abstract class RequestHandler {
         return this.next;
     }
 
-    public abstract boolean handle(Transfer request, Account account);
-    public boolean next(Transfer request, Account account) {
-        return next == null || next.handle(request, account);
+    public abstract void handle(Transfer request, Account account);
+    public void next(Transfer request, Account account) {
+        if (next == null)
+            return;
+        next.handle(request, account);
     }
 }
