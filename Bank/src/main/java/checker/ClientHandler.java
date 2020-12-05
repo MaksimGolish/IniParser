@@ -11,9 +11,8 @@ public class ClientHandler extends RequestHandler {
 
     @Override
     public void handle(Transfer request, Account account) {
-        if (request.getSender().getPassport() == null && request.getAmount() > limit)
+        if (!request.getSender().isVerified() && request.getAmount() > limit)
             throw new UnverifiedTransferException();
-        else
-            next(request, account);
+        next(request, account);
     }
 }

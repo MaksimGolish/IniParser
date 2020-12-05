@@ -21,4 +21,8 @@ public class Client {
         this.surname = surname;
         this.passport = passport;
     }
+
+    public boolean isVerified() {
+        return passport != null;
+    }
 }

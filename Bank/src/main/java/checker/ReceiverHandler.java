@@ -10,7 +10,6 @@ public class ReceiverHandler extends RequestHandler {
     public void handle(Transfer request, Account account) {
         if (TransactionProcessor.getInstance().findBankByAccount(request.getRecipient()) == null)
             throw new AccountNotFoundException(request.getRecipient());
-        else
-            next(request, account);
+        next(request, account);
     }
 }

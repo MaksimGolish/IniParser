@@ -85,7 +85,7 @@ public abstract class Bank {
                         .getAccount(operation.getAccount())
                         .addForced(operation.getAmount());
                 break;
-            case CREDITING:
+            case REPLENISHMENT:
                 bankService
                         .getAccount(operation.getAccount())
                         .getForced(operation.getAmount());
@@ -120,7 +120,7 @@ public abstract class Bank {
                 .add(amount);
         InnerOperation operation = new InnerOperation(
                 account,
-                OperationType.CREDITING,
+                OperationType.REPLENISHMENT,
                 amount
         );
         transactions.put(operation.getId(), operation);

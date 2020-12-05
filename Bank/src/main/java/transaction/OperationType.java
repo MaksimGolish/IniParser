@@ -1,6 +1,6 @@
 package transaction;
 
 public enum OperationType {
-    CREDITING,
+    REPLENISHMENT,
     WITHDRAW
 }

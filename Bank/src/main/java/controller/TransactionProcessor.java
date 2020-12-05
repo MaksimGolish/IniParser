@@ -1,22 +1,24 @@
 package controller;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import transaction.InnerOperation;
+import transaction.Transaction;
 import transaction.Transfer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+@NoArgsConstructor
 public class TransactionProcessor {
-    private static final TransactionProcessor instance = new TransactionProcessor();
-
+    @Getter
+    private final static TransactionProcessor instance = new TransactionProcessor();
     private final List<Bank> banks = new ArrayList<>();
-    public static TransactionProcessor getInstance() {
-        return instance;
-    }
 
-    public void addBank(Bank bank) {
-        banks.add(bank);
+    public void addBank(Bank... banks) {
+        this.banks.addAll(Arrays.asList(banks));
     }
 
     public boolean proceedTransaction(Transfer transfer) {
