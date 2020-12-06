@@ -1,4 +1,5 @@
 import controller.ExampleBank;
+import controller.TransactionProcessor;
 import exception.AccountNotFoundException;
 import exception.NotEnoughMoneyException;
 import exception.UnverifiedTransferException;
@@ -68,6 +69,7 @@ public class BasicOperationsTest {
                 .surname("Golish")
                 .passport(1L)
                 .build();
+        TransactionProcessor.getInstance().addBank(bank);
         bank.addClient(client);
         UUID debit = bank.createDebitAccount(client.getId());
         UUID credit = bank.createCreditAccount(client.getId(), 50000);
@@ -111,6 +113,7 @@ public class BasicOperationsTest {
                 .surname("Kats")
                 .passport(1L)
                 .build();
+        TransactionProcessor.getInstance().addBank(firstBank, secondBank);
         secondBank.addClient(fredi);
         UUID frediAccount = secondBank.createDebitAccount(fredi.getId());
         firstBank.send(maxAccount, 500, frediAccount);
@@ -146,6 +149,7 @@ public class BasicOperationsTest {
                 .passport(1L)
                 .build();
         secondBank.addClient(fredi);
+        TransactionProcessor.getInstance().addBank(firstBank, secondBank);
         UUID frediAccount = secondBank.createDebitAccount(fredi.getId());
         firstBank.send(maxAccount, 500, frediAccount);
         firstBank.getTransactions().get(0).cancel();
@@ -182,6 +186,7 @@ public class BasicOperationsTest {
                 .build();
         secondBank.addClient(fredi);
         UUID frediAccount = secondBank.createDebitAccount(fredi.getId());
+        TransactionProcessor.getInstance().addBank(firstBank, secondBank);
         Assertions.assertThrows(
                 UnverifiedTransferException.class,
                 () -> firstBank.send(maxAccount, 15000, frediAccount)

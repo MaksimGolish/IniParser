@@ -27,7 +27,6 @@ public abstract class Bank {
         this.name = name;
         bankService = new BankService();
         transactions = new HashMap<>();
-        TransactionProcessor.getInstance().addBank(this);
         setupTransactions();
     }
 
