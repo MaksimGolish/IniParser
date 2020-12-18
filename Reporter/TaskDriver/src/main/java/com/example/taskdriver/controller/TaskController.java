@@ -1,8 +1,8 @@
-package com.example.taskmanager.controller;
+package com.example.taskdriver.controller;
 
-import com.example.taskmanager.entity.Task;
-import com.example.taskmanager.model.TaskDto;
-import com.example.taskmanager.service.TaskService;
+import com.example.taskdriver.entity.Task;
+import com.example.taskdriver.model.TaskDto;
+import com.example.taskdriver.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

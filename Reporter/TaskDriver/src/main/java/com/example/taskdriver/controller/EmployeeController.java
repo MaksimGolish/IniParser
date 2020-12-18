@@ -1,8 +1,8 @@
-package com.example.taskmanager.controller;
+package com.example.taskdriver.controller;
 
-import com.example.taskmanager.entity.Employee;
-import com.example.taskmanager.entity.Task;
-import com.example.taskmanager.service.EmployeeService;
+import com.example.taskdriver.entity.Employee;
+import com.example.taskdriver.entity.Task;
+import com.example.taskdriver.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +21,19 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
-    @GetMapping("/id")
-    public Employee getEmployee(UUID id) {
+    @GetMapping("/{id}")
+    public Employee getEmployee(@PathVariable UUID id) {
         return employeeService.getEmployee(id);
     }
 
     @GetMapping("/{id}/tasks")
     public Collection<Task> getAllEmployeeTasks(@PathVariable UUID id) {
         return employeeService.getAllEmployeeTasks(id);
+    }
+
+    @GetMapping("/leads")
+    public List<Employee> getLeads() {
+        return employeeService.getLeads();
     }
 
     @PostMapping

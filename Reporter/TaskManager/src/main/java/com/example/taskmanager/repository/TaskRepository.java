@@ -1,7 +1,7 @@
 package com.example.taskmanager.repository;
 
-import com.example.taskmanager.entity.Employee;
-import com.example.taskmanager.entity.Task;
+import com.example.taskdriver.entity.Employee;
+import com.example.taskdriver.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

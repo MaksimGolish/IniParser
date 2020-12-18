@@ -1,7 +1,7 @@
-package com.example.taskmanager.service;
+package com.example.taskdriver.service;
 
-import com.example.taskmanager.entity.Task;
-import com.example.taskmanager.model.TaskDto;
+import com.example.taskdriver.entity.Task;
+import com.example.taskdriver.model.TaskDto;
 
 import java.util.List;
 import java.util.UUID;

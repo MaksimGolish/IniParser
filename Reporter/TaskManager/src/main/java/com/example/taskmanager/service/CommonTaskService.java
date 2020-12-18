@@ -1,8 +1,9 @@
 package com.example.taskmanager.service;
 
-import com.example.taskmanager.model.TaskDto;
+import com.example.taskdriver.service.TaskService;
+import com.example.taskdriver.model.TaskDto;
 import com.example.taskmanager.exception.TaskNotFoundException;
-import com.example.taskmanager.entity.Task;
+import com.example.taskdriver.entity.Task;
 import com.example.taskmanager.repository.TaskRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class CommonTaskService implements TaskService {
                 .name(taskDto.getName())
                 .description(taskDto.getDescription())
                 .employee(employeeService.getEmployee(taskDto.getEmployee()))
+                .assigner(employeeService.getEmployee(taskDto.getAssigner()))
                 .state(taskDto.getState())
                 .build());
     }

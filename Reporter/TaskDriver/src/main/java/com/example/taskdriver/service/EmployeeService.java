@@ -1,8 +1,8 @@
-package com.example.taskmanager.service;
+package com.example.taskdriver.service;
 
 
-import com.example.taskmanager.entity.Employee;
-import com.example.taskmanager.entity.Task;
+import com.example.taskdriver.entity.Employee;
+import com.example.taskdriver.entity.Task;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,4 +18,6 @@ public interface EmployeeService {
     Employee addEmployee(Employee employee);
 
     Employee setHead(UUID employeeId, UUID headId);
+
+    List<Employee> getLeads();
 }

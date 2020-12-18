@@ -1,7 +1,8 @@
 package com.example.taskmanager.service;
 
-import com.example.taskmanager.entity.Employee;
-import com.example.taskmanager.entity.Task;
+import com.example.taskdriver.entity.Employee;
+import com.example.taskdriver.entity.Task;
+import com.example.taskdriver.service.EmployeeService;
 import com.example.taskmanager.exception.EmployeeNotFoundException;
 import com.example.taskmanager.repository.EmployeeRepository;
 import com.example.taskmanager.repository.TaskRepository;
@@ -45,7 +46,12 @@ public class CommonEmployeeService implements EmployeeService {
     @Override
     public Employee setHead(UUID employeeId, UUID headId) {
         Employee employee = getEmployee(employeeId);
-        employee.setHead(getEmployee(headId));
+        employee.setHeadId(getEmployee(headId).getId().toString());
         return employeeRepository.save(employee);
+    }
+
+    @Override
+    public List<Employee> getLeads() {
+        return employeeRepository.findAllByHeadIdIsNull();
     }
 }
