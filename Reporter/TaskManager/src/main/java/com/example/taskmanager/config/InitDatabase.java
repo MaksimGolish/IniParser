@@ -1,8 +1,8 @@
 package com.example.taskmanager.config;
 
-import com.example.taskdriver.entity.Employee;
-import com.example.taskdriver.entity.Sprint;
-import com.example.taskdriver.entity.Task;
+import com.example.taskmanager.entity.Employee;
+import com.example.taskmanager.entity.Sprint;
+import com.example.taskmanager.entity.Task;
 import com.example.taskdriver.model.TaskState;
 import com.example.taskmanager.repository.EmployeeRepository;
 import com.example.taskmanager.repository.SprintRepository;
@@ -40,8 +40,8 @@ public class InitDatabase implements InitializingBean {
         lead.addSubordinate(firstEmployee);
         lead.addSubordinate(secondEmployee);
         lead = employeeRepository.save(lead);
-        firstEmployee.setHeadId(lead.getId().toString());
-        secondEmployee.setHeadId(lead.getId().toString());
+        firstEmployee.setHeadId(lead.getId());
+        secondEmployee.setHeadId(lead.getId());
         employeeRepository.save(lead);
         Task firstExampleTask = taskRepository.save(
                 Task.builder()

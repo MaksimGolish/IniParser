@@ -1,4 +1,4 @@
-package com.example.taskdriver.entity;
+package com.example.taskmanager.entity;
 
 import com.example.taskdriver.model.TaskState;
 import com.fasterxml.jackson.annotation.JsonGetter;

@@ -1,12 +1,10 @@
 package com.example.taskdriver.controller;
 
-import com.example.taskdriver.entity.Employee;
-import com.example.taskdriver.entity.Task;
+import com.example.taskdriver.model.EmployeeDto;
 import com.example.taskdriver.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,32 +15,32 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping
-    public List<Employee> getAllEmployees() {
+    public List<EmployeeDto> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployee(@PathVariable UUID id) {
+    public EmployeeDto getEmployee(@PathVariable UUID id) {
         return employeeService.getEmployee(id);
     }
-
-    @GetMapping("/{id}/tasks")
-    public Collection<Task> getAllEmployeeTasks(@PathVariable UUID id) {
-        return employeeService.getAllEmployeeTasks(id);
-    }
+//
+//    @GetMapping("/{id}/tasks")
+//    public Collection<TaskDto> getAllEmployeeTasks(@PathVariable UUID id) {
+//        return employeeService.getAllEmployeeTasks(id);
+//    }
 
     @GetMapping("/leads")
-    public List<Employee> getLeads() {
+    public EmployeeDto getLeads() {
         return employeeService.getLeads();
     }
 
     @PostMapping
-    public Employee addEmployee(@RequestBody Employee employee) {
+    public EmployeeDto addEmployee(@RequestBody EmployeeDto employee) {
         return employeeService.addEmployee(employee);
     }
 
     @PutMapping("/{employeeId}/head/{headId}")
-    public Employee setHead(@PathVariable UUID employeeId, @PathVariable UUID headId) {
+    public EmployeeDto setHead(@PathVariable UUID employeeId, @PathVariable UUID headId) {
         return employeeService.setHead(employeeId, headId);
     }
 }

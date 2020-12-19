@@ -1,6 +1,5 @@
 package com.example.taskdriver.controller;
 
-import com.example.taskdriver.entity.Task;
 import com.example.taskdriver.model.TaskDto;
 import com.example.taskdriver.service.TaskService;
 import lombok.AllArgsConstructor;
@@ -17,36 +16,36 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public List<Task> getTasks() {
+    public List<TaskDto> getTasks() {
         return taskService.getAllTasks();
     }
 
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable UUID id) {
+    public TaskDto getTaskById(@PathVariable UUID id) {
         return taskService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Task addTask(@RequestBody TaskDto task) {
+    public TaskDto addTask(@RequestBody TaskDto task) {
         return taskService.addTask(task);
     }
 
     @PutMapping("/{id}/activate")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Task activateTask(@PathVariable UUID id) {
+    public TaskDto activateTask(@PathVariable UUID id) {
         return taskService.activate(id);
     }
 
     @PutMapping("/{id}/resolve")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Task resolveTask(@PathVariable UUID id) {
+    public TaskDto resolveTask(@PathVariable UUID id) {
         return taskService.resolve(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Task deleteTask(@PathVariable UUID id) {
+    public TaskDto deleteTask(@PathVariable UUID id) {
         return taskService.delete(id);
     }
 }

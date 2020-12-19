@@ -1,4 +1,4 @@
-package com.example.taskdriver.entity;
+package com.example.taskmanager.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 

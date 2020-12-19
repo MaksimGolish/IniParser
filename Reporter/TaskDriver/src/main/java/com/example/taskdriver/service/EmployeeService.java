@@ -1,23 +1,22 @@
 package com.example.taskdriver.service;
 
-
-import com.example.taskdriver.entity.Employee;
-import com.example.taskdriver.entity.Task;
+import com.example.taskdriver.model.EmployeeDto;
+import com.example.taskdriver.model.TaskDto;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 public interface EmployeeService {
-    List<Employee> getAllEmployees();
+    List<EmployeeDto> getAllEmployees();
 
-    Employee getEmployee(UUID id);
+    EmployeeDto getEmployee(UUID id);
 
-    Collection<Task> getAllEmployeeTasks(UUID id);
+    Collection<TaskDto> getAllEmployeeTasks(UUID id);
 
-    Employee addEmployee(Employee employee);
+    EmployeeDto addEmployee(EmployeeDto employee);
 
-    Employee setHead(UUID employeeId, UUID headId);
+    EmployeeDto setHead(UUID employeeId, UUID headId);
 
-    List<Employee> getLeads();
+    EmployeeDto getLeads();
 }
