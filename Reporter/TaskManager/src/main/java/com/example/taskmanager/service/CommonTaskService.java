@@ -1,10 +1,10 @@
 package com.example.taskmanager.service;
 
-import com.example.taskdriver.service.TaskService;
 import com.example.taskdriver.model.TaskDto;
+import com.example.taskdriver.service.TaskService;
+import com.example.taskmanager.entity.Task;
 import com.example.taskmanager.exception.EmployeeNotFoundException;
 import com.example.taskmanager.exception.TaskNotFoundException;
-import com.example.taskmanager.entity.Task;
 import com.example.taskmanager.repository.EmployeeRepository;
 import com.example.taskmanager.repository.TaskRepository;
 import lombok.AllArgsConstructor;

@@ -1,9 +1,9 @@
 package com.example.report.service;
 
-import com.example.report.model.ReportTaskState;
 import com.example.report.entity.Report;
-import com.example.report.model.ReportCreationDto;
 import com.example.report.entity.ReportTask;
+import com.example.report.model.ReportCreationDto;
+import com.example.report.model.ReportTaskState;
 import com.example.report.repository.ReportRepository;
 import com.example.report.repository.ReportTaskRepository;
 import lombok.AllArgsConstructor;

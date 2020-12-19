@@ -1,9 +1,9 @@
 package com.example.taskmanager.config;
 
+import com.example.taskdriver.model.TaskState;
 import com.example.taskmanager.entity.Employee;
 import com.example.taskmanager.entity.Sprint;
 import com.example.taskmanager.entity.Task;
-import com.example.taskdriver.model.TaskState;
 import com.example.taskmanager.repository.EmployeeRepository;
 import com.example.taskmanager.repository.SprintRepository;
 import com.example.taskmanager.repository.TaskRepository;
