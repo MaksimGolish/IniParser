@@ -23,17 +23,6 @@ public class InitDatabase implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-//        Employee firstEmployee = employeeRepository.save(
-//                new Employee("employee1")
-//        );
-//        Employee secondEmployee = employeeRepository.save(
-//                new Employee("employee2")
-//        );
-//        Employee lead = new Employee("lead");
-//
-//        lead.addSubordinate(firstEmployee);
-//        lead.addSubordinate(secondEmployee);
-//        employeeRepository.save(lead);
         Employee firstEmployee = new Employee("employee1");
         Employee secondEmployee = new Employee("employee2");
         Employee lead = new Employee("lead");
