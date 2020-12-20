@@ -19,17 +19,19 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class ManagerConnectionService {
+public class CommonTaskManagerConnectionService implements TaskManagerConnectionService {
     private final ReportProperties properties;
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
+    @Override
     public List<ReportTask> getAllTasks(UUID id) {
         return deserialize(
                 getResponseBody("/sprint/" + id + "/tasks")
         );
     }
 
+    @Override
     public List<ReportTask> getAllTasksByDate(UUID id, String startDate, String endDate) {
         return deserialize(
                 getResponseBody("/sprint/" + id + "/tasks?startDate=" + startDate + "&endDate=" + endDate)
