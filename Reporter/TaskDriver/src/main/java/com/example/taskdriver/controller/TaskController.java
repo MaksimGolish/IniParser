@@ -1,6 +1,7 @@
 package com.example.taskdriver.controller;
 
 import com.example.taskdriver.model.TaskDto;
+import com.example.taskdriver.model.TaskLogDto;
 import com.example.taskdriver.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,11 @@ public class TaskController {
     @GetMapping("/{id}")
     public TaskDto getTaskById(@PathVariable UUID id) {
         return taskService.getById(id);
+    }
+
+    @GetMapping("/{id}/logs")
+    public List<TaskLogDto> getTaskLogs(@PathVariable UUID id) {
+        return taskService.getById(id).getLogs();
     }
 
     @PostMapping

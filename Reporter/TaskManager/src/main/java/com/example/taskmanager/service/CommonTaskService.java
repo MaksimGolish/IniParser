@@ -1,8 +1,10 @@
 package com.example.taskmanager.service;
 
 import com.example.taskdriver.model.TaskDto;
+import com.example.taskdriver.model.TaskLogDto;
 import com.example.taskdriver.service.TaskService;
 import com.example.taskmanager.entity.Task;
+import com.example.taskmanager.entity.TaskUpdateLog;
 import com.example.taskmanager.exception.EmployeeNotFoundException;
 import com.example.taskmanager.exception.TaskNotFoundException;
 import com.example.taskmanager.repository.EmployeeRepository;
@@ -76,11 +78,17 @@ public class CommonTaskService implements TaskService {
                 .name(task.getName())
                 .description(task.getDescription())
                 .employee(task.getEmployee())
-                .assigner(task.getId())
+                .assigner(task.getAssigner())
                 .state(task.getState())
                 .opened(task.getOpened())
                 .activated(task.getActivated())
                 .resolved(task.getResolved())
+                .logs(
+                        task.getLogs()
+                                .stream()
+                                .map(CommonTaskService::logEntityToDto)
+                                .collect(Collectors.toList())
+                )
                 .build();
     }
 
@@ -99,6 +107,14 @@ public class CommonTaskService implements TaskService {
                                 .orElseThrow(() -> new EmployeeNotFoundException(taskDto.getAssigner()))
                 )
                 .state(taskDto.getState())
+                .build();
+    }
+
+    private static TaskLogDto logEntityToDto(TaskUpdateLog taskUpdateLog) {
+        return TaskLogDto.builder()
+                .id(taskUpdateLog.getId())
+                .message(taskUpdateLog.getInfo())
+                .time(taskUpdateLog.getTime())
                 .build();
     }
 }

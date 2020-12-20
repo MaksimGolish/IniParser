@@ -32,24 +32,24 @@ public class InitDatabase implements InitializingBean {
         firstEmployee.setHeadId(lead.getId());
         secondEmployee.setHeadId(lead.getId());
         employeeRepository.save(lead);
-        Task firstExampleTask = taskRepository.save(
-                Task.builder()
+        Task firstExampleTask = Task.builder()
                         .name("Task1")
                         .description("First example task")
                         .employee(firstEmployee)
                         .assigner(lead)
                         .state(TaskState.OPEN)
-                        .build()
-        );
-        Task secondExampleTask = taskRepository.save(
-                Task.builder()
+                        .build();
+        firstExampleTask.activate();
+        taskRepository.save(firstExampleTask);
+        Task secondExampleTask = Task.builder()
                         .name("Task1")
                         .description("First example task")
                         .employee(firstEmployee)
                         .assigner(lead)
                         .state(TaskState.OPEN)
-                        .build()
-        );
+                        .build();
+        secondExampleTask.resolve();
+        taskRepository.save(secondExampleTask);
         Sprint sprint = sprintRepository.save(new Sprint("Sprint example"));
         sprint.addTask(firstExampleTask);
         sprint.addTask(secondExampleTask);
